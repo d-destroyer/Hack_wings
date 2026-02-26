@@ -1,0 +1,1600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WINGS 🪽 | Explore</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* --- GLOBAL --- */
+    * {margin:0; padding:0; box-sizing:border-box; font-family: 'Poppins', sans-serif;}
+    :root {
+      --teal: #6ed6c3;
+      --lavender: #b48efa;
+      --peach: #ffb28b;
+      --glow: linear-gradient(135deg, var(--peach), var(--lavender), var(--teal));
+      --mx: 0px;
+      --my: 0px;
+    }
+    body {
+      background: url("assets/background.jpg") center/cover no-repeat fixed;
+      min-height:100vh;
+      color:#333;
+      transition: background 0.5s ease;
+    }
+
+    body.dark {
+      background: linear-gradient(135deg, #0f0f0f, #1a1a1a) fixed;
+    }
+    img {display:block; max-width:100%; object-fit: cover;}
+
+    /* --- HEADER --- */
+    header {
+      position:sticky; top:0; z-index:10;
+      background:rgba(255,255,255,0.85);
+      backdrop-filter:blur(8px);
+      border-bottom:1px solid #ddd;
+    }
+    .navbar {
+      max-width:950px; margin:auto;
+      display:flex; justify-content:space-between; align-items:center;
+      padding:12px 20px;
+    }
+    .logo {font-size:26px; font-weight:700; letter-spacing:1px;}
+    .search-box {
+      display:none;
+    }
+    @media(min-width:600px){
+      .search-box{display:flex; align-items:center; background:#f2f2f2; border-radius:8px; padding:5px 10px;}
+      .search-box input{border:none; background:none; outline:none; font-size:14px;}
+    }
+    .nav-icons {display:flex; align-items:center; gap:20px;}
+    .nav-icons img {width:24px; cursor:pointer; transition: transform 0.2s;}
+    .nav-icons img:hover {transform:scale(1.2);}
+
+    /* --- MAIN LAYOUT --- */
+    main {display:flex; justify-content:center; gap:40px; padding:30px 15px; margin-left:90px; transition: margin-left 0.5s ease;}
+    .navbar:hover ~ main { margin-left: 220px; }
+
+    /* --- NAVBAR BASE --- */
+    .navbar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 90px;
+      height: 100%;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(15px);
+      box-shadow: 2px 0 15px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 25px;
+      transition: all 0.5s ease;
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    /* --- BACKGROUND IMAGE ON HOVER --- */
+    .navbar::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url("assets/temp_image_1760002423274.jpeg") center/cover no-repeat;
+      opacity: 0;
+      transform: scale(1.1) translateX(var(--mx)) translateY(var(--my));
+      transition: opacity 0.5s ease, transform 0.3s ease;
+      z-index: -1;
+    }
+
+    .navbar:hover {
+      width: 220px;
+    }
+
+    .navbar:hover::before {
+      opacity: 1;
+      transform: scale(1) translateX(var(--mx)) translateY(var(--my));
+    }
+
+    .side-navbar.dark {
+      background: rgba(26, 26, 26, 0.95) !important;
+    }
+
+    .side-navbar.dark::before {
+      opacity: 0 !important;
+    }
+
+    /* --- NAV ITEMS --- */
+    .nav-item {
+      width: 85%;
+      margin: 0;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      border-radius: 12px;
+      color: #333;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .nav-item i {
+      font-size: 1.4rem;
+      min-width: 30px;
+      text-align: center;
+      color: #fff;
+    }
+    .nav-item span {
+      opacity: 0;
+      transform: translateX(-10px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      white-space: nowrap;
+      font-weight: bold;
+      color: #fff;
+    }
+    .navbar:hover .nav-item span {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .nav-item:hover {
+      background: var(--glow);
+      color: #fff;
+      box-shadow: 0 0 20px rgba(180,142,250,0.6), 0 0 40px rgba(110,214,195,0.3);
+      transform: translateX(8px);
+    }
+    .nav-item.active {
+      background: var(--glow);
+      color: #fff;
+    }
+
+    /* --- RIGHT NAVBAR --- */
+    .right-navbar {
+      position: fixed;
+      right: 0;
+      top: 0;
+      width: 90px;
+      height: 100%;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(15px);
+      box-shadow: -2px 0 15px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 25px;
+      transition: all 0.5s ease;
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    /* --- BACKGROUND IMAGE ON HOVER --- */
+    .right-navbar::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url("assets/temp_image_1760002423274.jpeg") center/cover no-repeat;
+      opacity: 0;
+      transform: scale(1.1) translateX(var(--mx)) translateY(var(--my));
+      transition: opacity 0.5s ease, transform 0.3s ease;
+      z-index: -1;
+    }
+
+    .right-navbar:hover {
+      width: 220px;
+    }
+
+    .right-navbar:hover::before {
+      opacity: 1;
+      transform: scale(1) translateX(var(--mx)) translateY(var(--my));
+    }
+
+    .right-navbar.dark {
+      background: rgba(26, 26, 26, 0.95) !important;
+    }
+
+    .right-navbar.dark::before {
+      opacity: 0 !important;
+    }
+
+    .right-navbar .nav-item {
+      width: 85%;
+      margin: 0;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      border-radius: 12px;
+      color: #333;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .right-navbar .nav-item i {
+      font-size: 1.4rem;
+      min-width: 30px;
+      text-align: center;
+      color: #fff;
+    }
+
+    .right-navbar .nav-item span {
+      opacity: 0;
+      transform: translateX(-10px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      white-space: nowrap;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .right-navbar:hover .nav-item span {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .right-navbar .nav-item:hover {
+      background: var(--glow);
+      color: #fff;
+      box-shadow: 0 0 20px rgba(180,142,250,0.6), 0 0 40px rgba(110,214,195,0.3);
+      transform: translateX(-8px);
+    }
+
+    .badge {
+      background: #ff4757;
+      color: white;
+      border-radius: 50%;
+      padding: 2px 6px;
+      font-size: 10px;
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      min-width: 18px;
+      text-align: center;
+    }
+
+    /* --- EXPLORE GRID --- */
+    .explore-container {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 0 15px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 15px;
+    }
+
+    .explore-post {
+      background: rgba(255,255,255,0.9);
+      border-radius:12px;
+      border:1px solid #e3e3e3;
+      overflow:hidden;
+      position:relative;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .explore-post .post-media {
+      cursor: default;
+    }
+
+    .explore-post:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .post-media {
+      position: relative;
+      width: 100%;
+      height: 300px;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .post-media img, .post-media video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .video-icon {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .post-content {
+      padding: 12px;
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .post-header img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .post-header p {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .post-caption {
+      font-size: 14px;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    .post-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .post-actions i {
+      font-size: 20px;
+      color: #666;
+      cursor: pointer;
+      transition: color 0.2s;
+      margin-right: 15px;
+    }
+
+    .post-actions i:hover {
+      color: #333;
+    }
+
+    .heart.liked {
+      color: #e74c3c !important;
+    }
+
+    .content-type {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(255,255,255,0.9);
+      color: #333;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Video Controls Overlay */
+    .video-controls {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+      background: rgba(0,0,0,0.3);
+    }
+
+    .explore-post:hover .video-controls {
+      opacity: 1;
+    }
+
+    .play-pause-btn {
+      background: rgba(255,255,255,0.8);
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 20px;
+      color: #000;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 15px;
+      transition: background 0.3s;
+    }
+
+    .play-pause-btn:hover {
+      background: rgba(255,255,255,1);
+    }
+
+    .control-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0,0,0,0.7);
+      padding: 8px 15px;
+      border-radius: 20px;
+    }
+
+    .volume-btn, .pip-btn, .download-btn {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+      padding: 6px;
+      transition: background 0.3s;
+    }
+
+    .volume-btn:hover, .pip-btn:hover, .download-btn:hover {
+      background: rgba(255,255,255,0.4);
+    }
+
+    .volume-slider {
+      width: 60px;
+      height: 3px;
+      background: #ddd;
+      border-radius: 2px;
+    }
+
+    .speed-selector {
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: none;
+      border-radius: 3px;
+      padding: 4px 8px;
+      font-size: 12px;
+    }
+
+    /* --- SIDEBAR --- */
+    .sidebar {display:none;}
+    @media(min-width:992px){
+      .sidebar {display:flex; flex-direction:column; width:300px; gap:20px;}
+      .sidebar {position: relative;}
+      .profile-box, .suggestions, .network-stats {background:rgba(255,255,255,0.9); border-radius:12px; border:1px solid #e3e3e3; padding:16px;}
+      .network-stats {margin-top: 20px;}
+      .network-card {background: rgba(255,255,255,0.9); border-radius:12px; border:1px solid #e3e3e3; padding:12px; margin-top:20px;}
+      .network-header {display:flex; align-items:center; gap:8px; margin-bottom:6px;}
+      .network-dot {width:10px; height:10px; border-radius:50%; background:linear-gradient(45deg,#34d399,#06b6d4); box-shadow:0 2px 6px rgba(6,182,212,0.2);}
+      .network-title {font-size:14px; margin:0; font-weight:600;}
+      .network-grid {display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:8px;}
+      .network-tile {background:rgba(0,0,0,0.05); padding:8px; border-radius:8px;}
+      .network-label {font-size:11px; color:#666; margin-bottom:4px;}
+      .network-value {font-size:14px; font-weight:600;}
+      .network-small {font-size:10px; color:#666; margin-top:4px;}
+      .network-timer {background:rgba(0,0,0,0.03); padding:8px; border-radius:6px; margin-bottom:8px;}
+      .network-btn {width:100%; padding:6px; border-radius:6px; border:0; background:#6ed6c3; color:white; cursor:pointer; font-weight:600; font-size:12px;}
+      .network-status {font-size:10px; color:#666; margin-top:4px;}
+      .screen-time {position: fixed; bottom: 20px; right: 20px; width: 280px; background:rgba(255,255,255,0.9); border-radius:12px; border:1px solid #e3e3e3; padding:20px; font-size: 16px; z-index: 5;}
+      .screen-time h4 {font-size: 18px; margin-bottom: 10px;}
+      .screen-time #screenTimeDisplay {font-size: 20px; font-weight: bold;}
+      .network-stats {transition: all 0.5s ease;}
+      .profile-box {display:flex; align-items:center; justify-content:space-between;}
+      .profile-box img {width:50px; height:50px; border-radius:50%;}
+      .profile-info {flex:1; margin-left:10px;}
+      .profile-info p:first-child {font-weight:600;}
+      .suggestions h4 {font-size:14px; color:#777; margin-bottom:10px;}
+      .suggestion {display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;}
+      .suggestion img {width:34px; height:34px; border-radius:50%;}
+      .suggestion p {font-size:13px; font-weight:600;}
+      .suggestion button {background:none; border:none; color:#0095f6; font-weight:600; cursor:pointer;}
+    }
+
+    @keyframes fadeOut {
+      0%{opacity:0;transform:translate(-50%,20px);}
+      10%,90%{opacity:1;transform:translate(-50%,0);}
+      100%{opacity:0;transform:translate(-50%,-20px);}
+    }
+
+    @keyframes bgShift {
+      0%, 100% {
+        background: linear-gradient(135deg, #800080, #FF69B4, #000000), url("assets/post6.jpg") center/contain no-repeat fixed;
+      }
+      50% {
+        background: linear-gradient(135deg, #FF69B4, #000000, #800080), url("assets/post6.jpg") center/contain no-repeat fixed;
+      }
+    }
+
+    /* Post Modal */
+    .post-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(5px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .post-modal-content {
+      background: rgba(255,255,255,0.95);
+      border-radius: 16px;
+      width: 90%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: rgba(0,0,0,0.5);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      font-size: 18px;
+      cursor: pointer;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-post-media {
+      width: 100%;
+      min-height: 300px;
+      max-height: 70vh;
+      background: #000;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-post-media img, .modal-post-media video {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .modal-video-controls {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+      background: rgba(0,0,0,0.3);
+    }
+
+    .modal-post-media:hover .modal-video-controls {
+      opacity: 1;
+    }
+
+    .modal-post-content {
+      padding: 20px;
+    }
+
+    .modal-post-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .modal-post-header img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 12px;
+    }
+
+    .modal-post-header p {
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .modal-post-caption {
+      font-size: 16px;
+      line-height: 1.4;
+      margin-bottom: 15px;
+    }
+
+    .modal-post-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-post-actions i {
+      font-size: 24px;
+      color: #666;
+      cursor: pointer;
+      transition: color 0.2s;
+      margin-right: 20px;
+    }
+
+    .modal-post-actions i:hover {
+      color: #333;
+    }
+
+    .modal-heart.liked {
+      color: #e74c3c !important;
+    }
+
+    /* Post Comment Modal */
+    .post-comment-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(6px);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .post-comment-content {
+      background: #1b1f25;
+      border-radius: 16px;
+      width: 400px;
+      max-height: 70vh;
+      overflow-y: auto;
+      padding: 1rem;
+      box-shadow: 0 0 20px rgba(255,255,255,0.1);
+    }
+    .post-comment {
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding: .5rem 0;
+    }
+    .post-comment small {
+      color: #aaa;
+      display: block;
+    }
+    .post-comment-input {
+      display: flex;
+      gap: .5rem;
+      margin-top: 1rem;
+    }
+    .post-comment-input input {
+      flex: 1;
+      padding: .5rem;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+    }
+    .post-comment-input button {
+      background: #6ed6c3;
+      border: none;
+      padding: .5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background .2s;
+      color: #fff;
+    }
+    .post-comment-input button:hover {
+      background: #56b9a8;
+    }
+    .post-comment-input button:disabled {
+      background: #555;
+      cursor: not-allowed;
+    }
+    .post-close-btn {
+      float: right;
+      cursor: pointer;
+      color: #ffb28b;
+      font-size: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="navbar">
+    <div class="logo">WINGS 🪽</div>
+    <div class="search-box">
+      🔍 <input type="text" placeholder="Search..." id="searchInput" />
+    </div>
+    <div class="nav-icons">
+      <img src="https://img.icons8.com/ios/50/home.png" onclick="window.location.href='home.html'" />
+      <img src="https://img.icons8.com/ios/50/sent.png" onclick="window.location.href='message.html'" />
+      <img id="themeToggle" src="https://img.icons8.com/ios/50/moon-symbol.png" title="Toggle Dark Mode"/>
+      <img src="https://img.icons8.com/ios/50/like--v1.png" onclick="window.location.href='noti.html'" />
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="explore-container" id="explorePosts"></section>
+
+  <aside class="sidebar">
+    <div class="profile-box">
+      <img src="https://i.pravatar.cc/60" alt="divyansh_srivastav">
+      <div class="profile-info">
+        <p>divyansh_srivastav</p>
+        <p style="color:gray;font-size:13px;">Welcome back!</p>
+      </div>
+      <button onclick="window.location.href='login.html'">Switch</button>
+    </div>
+    <div class="suggestions">
+      <h4>Suggestions for you</h4>
+      <div id="suggestions"></div>
+    </div>
+  </aside>
+</main>
+
+<!-- NAVBAR -->
+<div class="navbar side-navbar">
+  <div class="nav-item" onclick="window.location.href='home.html'">
+    <i class="fa-solid fa-house"></i>
+    <span>Home</span>
+  </div>
+  <div class="nav-item" onclick="window.location.href='message.html'">
+    <i class="fa-solid fa-message"></i>
+    <span>Message</span>
+  </div>
+  <div class="nav-item" onclick="window.location.href='reels.html'">
+    <i class="fa-solid fa-clapperboard"></i>
+    <span>Reel</span>
+  </div>
+  <div class="nav-item active" onclick="window.location.href='explore.html'">
+    <i class="fa-solid fa-compass"></i>
+    <span>Explore</span>
+  </div>
+  <div class="nav-item" onclick="alert('Standpoint coming soon')">
+    <i class="fa-solid fa-lightbulb"></i>
+    <span>Standpoint</span>
+  </div>
+  <div class="nav-item" onclick="goProfile()">
+    <i class="fa-solid fa-user"></i>
+    <span>Profile</span>
+  </div>
+</div>
+
+<!-- Right Navbar -->
+<div class="right-navbar">
+  <div class="nav-item" onclick="showNotifications()">
+    <i class="fa-solid fa-bell"></i>
+    <span>Notifications</span>
+    <span id="notificationBadge" class="badge" style="display:none;"></span>
+  </div>
+  <div class="nav-item" onclick="logout()">
+    <i class="fa-solid fa-right-from-bracket"></i>
+    <span>Log Out</span>
+  </div>
+  <div class="nav-item" onclick="toggleDarkMode()">
+    <i class="fa-solid fa-moon"></i>
+    <span>Dark Mode</span>
+  </div>
+  <div class="nav-item" onclick="switchAccount()">
+    <i class="fa-solid fa-users"></i>
+    <span>Switch Account</span>
+  </div>
+</div>
+
+<script>
+// Parallax cursor effect
+const navbar = document.querySelector('.navbar');
+navbar.addEventListener('mousemove', e => {
+  const rect = navbar.getBoundingClientRect();
+  const mx = ((e.clientX - rect.left) / rect.width - 0.5) * 20;
+  const my = ((e.clientY - rect.top) / rect.height - 0.5) * 20;
+  navbar.style.setProperty('--mx', mx + 'px');
+  navbar.style.setProperty('--my', my + 'px');
+});
+navbar.addEventListener('mouseleave', () => {
+  navbar.style.setProperty('--mx', '0px');
+  navbar.style.setProperty('--my', '0px');
+});
+
+// --- EXPLORE POSTS AND REELS ---
+const exploreContainer = document.getElementById("explorePosts");
+
+Promise.all([
+  fetch('/posts').then(res => res.json()),
+  fetch('/api/reels').then(res => res.json())
+])
+.then(([posts, reels]) => {
+  // Combine posts and reels, mark their type
+  const allContent = [
+    ...posts.map(post => ({ ...post, type: 'post' })),
+    ...reels.map(reel => ({ ...reel, type: 'reel' }))
+  ];
+
+  // Sort by creation date (newest first)
+  allContent.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+  allContent.forEach(content => {
+    const isVideo = content.media.includes('.mp4') || content.media.includes('.mov') || content.media.includes('.avi');
+    const mediaTag = isVideo ?
+      `<video src="${content.media}" playsinline controls preload="metadata"></video>` :
+      `<img src="${content.media}" alt="${content.type}">`;
+
+    const videoIcon = isVideo ? '<div class="video-icon"><i class="fas fa-play"></i></div>' : '';
+    const contentType = content.type === 'reel' ? '<span class="content-type">Reel</span>' : '';
+    const isLiked = content.likedBy && content.likedBy.includes(currentUsername);
+
+    exploreContainer.innerHTML += `
+      <div class="explore-post" id="${content.type}-${content._id}" data-id="${content._id}" data-type="${content.type}" onclick="openContentModal('${content._id}', '${content.user.username}', '${content.caption.replace(/'/g, "\\'")}', '${content.media}', ${isVideo}, '${content.type}')">
+        <div class="post-media">
+          ${mediaTag}
+          ${videoIcon}
+          ${contentType}
+        </div>
+        <div class="post-content">
+          <div class="post-header">
+            <img src="https://i.pravatar.cc/40?u=${content.user.username}" alt="${content.user.username}">
+            <p>${content.user.username}</p>
+          </div>
+          <p class="post-caption">${content.caption}</p>
+          <div class="post-actions">
+            <div>
+              <i class="fas fa-heart heart ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation(); likeContent('${content._id}', '${content.type}')"></i>
+              <i class="fas fa-comment" onclick="event.stopPropagation(); commentContent('${content._id}', '${content.type}')" style="margin-left:15px;"></i>
+              <i class="fas fa-share" onclick="event.stopPropagation(); shareContent('${content._id}', '${content.type}')" style="margin-left:15px;"></i>
+            </div>
+            <div>
+              <i class="fas fa-bookmark" onclick="event.stopPropagation(); saveContent('${content._id}', '${content.type}')" style="margin-right:10px;"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+})
+.catch(err => console.error('Error fetching content:', err));
+
+// --- CURRENT USER ---
+let currentUser = localStorage.getItem('currentUser') || 'Divyansh Srivastav';
+let currentUsername = localStorage.getItem('currentUsername') || 'divyansh_srivastav';
+localStorage.setItem('currentUser', currentUser);
+localStorage.setItem('currentUsername', currentUsername);
+
+// Comment modal variables
+let currentCommentId = null;
+let currentCommentType = null;
+
+// --- SUGGESTIONS ---
+const suggestionContainer = document.getElementById("suggestions");
+function loadSuggestions(users) {
+  suggestionContainer.innerHTML = '';
+  users.slice(0,10).forEach((user, i) => {
+    suggestionContainer.innerHTML += `<div class="suggestion">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <img src="https://i.pravatar.cc/40?u=${user.fullName}">
+        <p>${user.fullName}</p>
+      </div>
+      <button onclick="switchUser('${user.fullName}')">Switch</button>
+    </div>`;
+  });
+}
+fetch('/api/auth/users')
+  .then(res => res.json())
+  .then(users => loadSuggestions(users))
+  .catch(err => console.error('Error fetching users:', err));
+
+function switchUser(fullName) {
+  currentUser = fullName;
+  const user = allUsers.find(u => u.fullName === fullName);
+  if (user) currentUsername = user.username;
+  localStorage.setItem('currentUser', currentUser);
+  localStorage.setItem('currentUsername', currentUsername);
+  sessionStorage.setItem('startTime', Date.now());
+  location.reload();
+}
+
+function loadNotifications() {
+  fetch(`/api/notifications/${currentUsername}/unread`)
+    .then(res => res.json())
+    .then(data => {
+      const badge = document.getElementById('notificationBadge');
+      if (data.count > 0) {
+        badge.textContent = data.count > 99 ? '99+' : data.count;
+        badge.style.display = 'inline';
+      } else {
+        badge.style.display = 'none';
+      }
+    })
+    .catch(err => console.error('Error loading notifications:', err));
+}
+
+function showNotifications() {
+  fetch(`/api/notifications/${currentUsername}/read`, { method: 'PUT' })
+    .then(() => {
+      loadNotifications();
+      window.location.href = 'noti.html';
+    })
+    .catch(err => console.error('Error marking notifications as read:', err));
+}
+
+// --- DARK MODE ---
+let dark = false;
+function toggleDarkMode() {
+  dark = !dark;
+  document.body.classList.toggle('dark', dark);
+  document.querySelector('.side-navbar').classList.toggle('dark', dark);
+  document.querySelector('.right-navbar').classList.toggle('dark', dark);
+  const toggle = document.getElementById("themeToggle");
+  if (toggle) {
+    toggle.src = dark
+      ? "https://img.icons8.com/ios/50/sun--v1.png"
+      : "https://img.icons8.com/ios/50/moon-symbol.png";
+  }
+  const moonIcon = document.querySelector('.right-navbar .nav-item:nth-child(2) i');
+  if (moonIcon) {
+    moonIcon.className = dark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+  }
+}
+const toggle = document.getElementById("themeToggle");
+if (toggle) {
+  toggle.onclick = toggleDarkMode;
+}
+
+// Screenshot detection
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    fetch('/api/notifications/screenshot', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ from: currentUsername })
+    }).catch(err => console.error('Error recording screenshot:', err));
+  }
+});
+
+// Screenshot popup check
+let lastScreenshotTime = 0;
+function checkScreenshots() {
+  fetch('/api/notifications/screenshot/latest')
+    .then(res => res.json())
+    .then(data => {
+      if (data && new Date(data.timestamp).getTime() > lastScreenshotTime) {
+        alert(`${data.from} took a screenshot!`);
+        lastScreenshotTime = new Date(data.timestamp).getTime();
+      }
+    })
+    .catch(err => console.error('Error checking screenshots:', err));
+}
+setInterval(checkScreenshots, 1000);
+
+// --- PROFILE FUNCTIONS ---
+function goProfile(){window.location.href='profile.html';}
+function logout(){
+  localStorage.clear();
+  window.location.href='login.html';
+}
+
+// Video Controls
+function togglePlay(id) {
+  const video = document.querySelector(`#post-${id} video`);
+  const btn = document.querySelector(`#post-${id} .play-pause-btn i`);
+  if (video) {
+    if (video.paused) {
+      video.play();
+      if (btn) btn.className = 'fas fa-pause';
+    } else {
+      video.pause();
+      if (btn) btn.className = 'fas fa-play';
+    }
+  }
+}
+
+function toggleMute(id) {
+  const video = document.querySelector(`#post-${id} video`);
+  const icon = document.querySelector(`#post-${id} .volume-btn i`);
+  if (video) {
+    video.muted = !video.muted;
+    if (icon) icon.className = video.muted ? 'fas fa-volume-mute' : 'fas fa-volume-up';
+  }
+}
+
+function setVolume(id, value) {
+  const video = document.querySelector(`#post-${id} video`);
+  if (video) {
+    video.volume = value;
+  }
+}
+
+function setSpeed(id, value) {
+  const video = document.querySelector(`#post-${id} video`);
+  if (video) {
+    video.playbackRate = parseFloat(value);
+  }
+}
+
+function downloadMedia(mediaUrl) {
+  const link = document.createElement('a');
+  link.href = mediaUrl;
+  link.download = '';
+  link.click();
+}
+
+function togglePictureInPicture(id) {
+  const video = document.querySelector(`#post-${id} video`);
+  if (video) {
+    if (document.pictureInPictureElement) {
+      document.exitPictureInPicture().catch(err => console.log('Exit PiP error:', err));
+    } else {
+      if (video.paused) {
+        video.play().then(() => {
+          video.requestPictureInPicture().catch(err => console.log('PiP error:', err));
+        }).catch(err => console.log('Play error:', err));
+      } else {
+        video.requestPictureInPicture().catch(err => console.log('PiP error:', err));
+      }
+    }
+  }
+}
+
+// Content Actions
+function likeContent(id, type) {
+  const heart = document.querySelector(`#${type}-${id} .heart`);
+  const endpoint = type === 'post' ? `/posts/${id}/like` : `/api/reels/${id}/like`;
+
+  fetch(endpoint, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username: currentUsername })
+  })
+  .then(res => res.json())
+  .then(data => {
+    const isLiked = data.likedBy.includes(currentUsername);
+    heart.classList.toggle('liked', isLiked);
+    // Update likes count if needed, but since we don't display it, maybe not
+  })
+  .catch(err => console.error('Error liking content:', err));
+}
+
+function commentContent(id, type) {
+  currentCommentId = id;
+  currentCommentType = type;
+  loadComments();
+  document.getElementById('postCommentModal').style.display = 'flex';
+}
+
+function shareContent(id, type) {
+  const url = window.location.href;
+  navigator.clipboard.writeText(url).then(() => {
+    alert('Link copied to clipboard!');
+  });
+}
+
+function saveContent(id, type) {
+  alert(`${type.charAt(0).toUpperCase() + type.slice(1)} saved!`);
+}
+
+// Comment functions
+function loadComments() {
+  console.log('Loading comments for:', { currentCommentId, currentCommentType });
+  const endpoint = currentCommentType === 'post' ? `/posts/${currentCommentId}/comments` : `/api/reels/${currentCommentId}/comments`;
+  console.log('Load comments endpoint:', endpoint);
+  fetch(endpoint)
+    .then(res => {
+      console.log('Load comments response status:', res.status);
+      return res.json();
+    })
+    .then(comments => {
+      console.log('Loaded comments:', comments);
+      const list = document.getElementById('postCommentsList');
+      list.innerHTML = '';
+      comments.forEach(comment => {
+        list.innerHTML += `<div class="post-comment">
+          <strong>${comment.user}</strong>: ${comment.text}
+          <small>${new Date().toLocaleString()}</small>
+        </div>`;
+      });
+    })
+    .catch(err => console.error('Error loading comments:', err));
+}
+
+function submitComment() {
+  const input = document.getElementById('newPostComment');
+  const text = input.value.trim();
+  if (!text) return;
+  console.log('Submitting comment:', { currentCommentId, currentCommentType, currentUsername, text });
+  const endpoint = currentCommentType === 'post' ? `/posts/${currentCommentId}/comment` : `/api/reels/${currentCommentId}/comment`;
+  console.log('Endpoint:', endpoint);
+  fetch(endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ user: currentUsername, text })
+  })
+  .then(res => {
+    console.log('Fetch response status:', res.status);
+    return res.json();
+  })
+  .then(data => {
+    console.log('Comment submitted successfully:', data);
+    input.value = '';
+    loadComments();
+  })
+  .catch(err => console.error('Error submitting comment:', err));
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('submitPostComment').addEventListener('click', submitComment);
+  document.getElementById('newPostComment').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') submitComment();
+  });
+  document.getElementById('closePostCommentModal').addEventListener('click', () => {
+    document.getElementById('postCommentModal').style.display = 'none';
+  });
+});
+
+// Content Modal Functions
+function openContentModal(id, username, caption, media, isVideo, type) {
+  const modal = document.getElementById('postModal');
+  const modalMedia = document.getElementById('modalPostMedia');
+  const modalContent = document.getElementById('modalPostContent');
+
+  const mediaTag = isVideo ?
+    `<video id="modalVideo" src="${media}" controls playsinline preload="metadata" style="width:100%;height:100%;object-fit:contain;">
+       <div class="modal-video-controls">
+         <button class="play-pause-btn" onclick="toggleModalPlay()">
+           <i class="fas fa-play"></i>
+         </button>
+         <div class="control-bar">
+           <button class="volume-btn" onclick="toggleModalMute()">
+             <i class="fas fa-volume-up"></i>
+           </button>
+           <input type="range" class="volume-slider" min="0" max="1" step="0.1" value="1" onchange="setModalVolume(this.value)">
+           <select class="speed-selector" onchange="setModalSpeed(this.value)">
+             <option value="0.5">0.5x</option>
+             <option value="1" selected>1x</option>
+             <option value="1.5">1.5x</option>
+             <option value="2">2x</option>
+           </select>
+           <button class="pip-btn" onclick="toggleModalPictureInPicture()" title="Picture-in-Picture">
+             <i class="fas fa-external-link-alt"></i>
+           </button>
+           <button class="download-btn" onclick="downloadMedia('${media}')" title="Download">
+             <i class="fas fa-download"></i>
+           </button>
+         </div>
+       </div>
+     </video>` :
+    `<img src="${media}" alt="${type}" style="width:100%;height:100%;object-fit:contain;">`;
+
+  modalMedia.innerHTML = mediaTag;
+
+  modalContent.innerHTML = `
+    <div class="modal-post-header">
+      <img src="https://i.pravatar.cc/40?u=${username}" alt="${username}">
+      <p>${username} <span style="font-size:12px;color:#666;text-transform:capitalize;">${type}</span></p>
+    </div>
+    <p class="modal-post-caption">${caption}</p>
+    <div class="modal-post-actions">
+      <div>
+        <i class="fas fa-heart modal-heart" onclick="likeContent('${id}', '${type}')"></i>
+        <i class="fas fa-comment" onclick="commentContent('${id}', '${type}')" style="margin-left:20px;"></i>
+        <i class="fas fa-share" onclick="shareContent('${id}', '${type}')" style="margin-left:20px;"></i>
+      </div>
+      <div>
+        <i class="fas fa-bookmark" onclick="saveContent('${id}', '${type}')" style="margin-right:10px;"></i>
+      </div>
+    </div>
+  `;
+
+  modal.style.display = 'flex';
+}
+
+function closePostModal() {
+  const modal = document.getElementById('postModal');
+  const video = document.getElementById('modalVideo');
+  if (video) {
+    video.pause();
+  }
+  modal.style.display = 'none';
+}
+
+function toggleModalPlay() {
+  const video = document.getElementById('modalVideo');
+  const btn = document.querySelector('.modal-video-controls .play-pause-btn i');
+  if (video) {
+    if (video.paused) {
+      video.play();
+      if (btn) btn.className = 'fas fa-pause';
+    } else {
+      video.pause();
+      if (btn) btn.className = 'fas fa-play';
+    }
+  }
+}
+
+function toggleModalMute() {
+  const video = document.getElementById('modalVideo');
+  const icon = document.querySelector('.modal-video-controls .volume-btn i');
+  if (video) {
+    video.muted = !video.muted;
+    if (icon) icon.className = video.muted ? 'fas fa-volume-mute' : 'fas fa-volume-up';
+  }
+}
+
+function setModalVolume(value) {
+  const video = document.getElementById('modalVideo');
+  if (video) {
+    video.volume = value;
+  }
+}
+
+function setModalSpeed(value) {
+  const video = document.getElementById('modalVideo');
+  if (video) {
+    video.playbackRate = parseFloat(value);
+  }
+}
+
+function toggleModalPictureInPicture() {
+  const video = document.getElementById('modalVideo');
+  if (video) {
+    if (document.pictureInPictureElement) {
+      document.exitPictureInPicture().catch(err => console.log('Exit PiP error:', err));
+    } else {
+      if (video.paused) {
+        video.play().then(() => {
+          video.requestPictureInPicture().catch(err => console.log('PiP error:', err));
+        }).catch(err => console.log('Play error:', err));
+      } else {
+        video.requestPictureInPicture().catch(err => console.log('PiP error:', err));
+      }
+    }
+  }
+}
+
+// Close modal when clicking outside
+document.getElementById('postModal').addEventListener('click', (e) => {
+  if (e.target.id === 'postModal') {
+    closePostModal();
+  }
+});
+
+// Initialize
+loadNotifications();
+</script>
+
+</body>
+
+<!-- Post Comment Modal -->
+<div class="post-comment-modal" id="postCommentModal">
+  <div class="post-comment-content">
+    <span class="post-close-btn" id="closePostCommentModal">&times;</span>
+    <h3>Comments</h3>
+    <div id="postCommentsList"></div>
+
+    <div class="post-comment-input">
+      <input type="text" id="newPostComment" placeholder="Add a comment..." maxlength="200">
+      <button id="submitPostComment">Post</button>
+    </div>
+  </div>
+</div>
+
+<div id="wings-chatbot">
+<style>
+#chatbot-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #6ed6c3, #b48efa, #ffb28b);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 24px;
+  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease;
+}
+#chatbot-toggle:hover {
+  transform: scale(1.1);
+}
+#chat-window {
+  display: none;
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 350px;
+  height: 500px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  z-index: 1000;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+}
+#chat-window.dark {
+  background-color: #2c2c2c;
+  color: white;
+  border-color: #555;
+}
+#chat-header {
+  background: linear-gradient(135deg, #6ed6c3, #b48efa);
+  color: white;
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+#close-chat {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+#chat-messages {
+  height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+  background: #f9f9f9;
+}
+#chat-window.dark #chat-messages {
+  background: #1e1e1e;
+}
+.message {
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  max-width: 80%;
+}
+.message.user {
+  background: #007bff;
+  color: white;
+  margin-left: auto;
+  text-align: right;
+}
+.message.bot {
+  background: #e9ecef;
+  color: #333;
+}
+#chat-window.dark .message.bot {
+  background: #444;
+  color: white;
+}
+#quick-actions {
+  padding: 10px;
+  border-top: 1px solid #ccc;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+#chat-window.dark #quick-actions {
+  border-color: #555;
+}
+.quick-btn {
+  background: #6ed6c3;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 0.3s;
+}
+.quick-btn:hover {
+  background: #56b9a8;
+}
+#chat-input-area {
+  display: flex;
+  border-top: 1px solid #ccc;
+}
+#chat-window.dark #chat-input-area {
+  border-color: #555;
+}
+#chat-input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  outline: none;
+  background: white;
+}
+#chat-window.dark #chat-input {
+  background: #2c2c2c;
+  color: white;
+}
+#send-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+#send-btn:hover {
+  background: #0056b3;
+}
+.typing {
+  font-style: italic;
+  color: #666;
+}
+#chat-window.dark .typing {
+  color: #ccc;
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const toggle = document.getElementById('chatbot-toggle');
+  const windowEl = document.getElementById('chat-window');
+  const closeBtn = document.getElementById('close-chat');
+  const messagesEl = document.getElementById('chat-messages');
+  const inputEl = document.getElementById('chat-input');
+  const sendBtn = document.getElementById('send-btn');
+  const quickActions = document.getElementById('quick-actions');
+
+  let chatHistory = JSON.parse(localStorage.getItem('wingsChatHistory')) || [];
+  let isDark = document.body.classList.contains('dark');
+
+  // Load history
+  function loadHistory() {
+    messagesEl.innerHTML = '';
+    chatHistory.forEach(msg => {
+      addMessage(msg.text, msg.sender);
+    });
+  }
+
+  // Save history
+  function saveHistory() {
+    localStorage.setItem('wingsChatHistory', JSON.stringify(chatHistory));
+  }
+
+  // Add message
+  function addMessage(text, sender) {
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `message ${sender}`;
+    msgDiv.textContent = text;
+    messagesEl.appendChild(msgDiv);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  // Bot responses
+  const responses = {
+    'hello': 'Hi there! How can I help you with Wings?',
+    'hi': 'Hello! Welcome to Wings. What would you like to know?',
+    'how to post': 'To post, click the + icon in the sidebar, select a photo/video, add a caption, and post!',
+    'explore': 'navigate:explore.html',
+    'profile': 'navigate:profile.html',
+    'message': 'navigate:message.html',
+    'reel': 'navigate:reels.html',
+    'story': 'navigate:home.html', // assuming stories are on home
+    'dark mode': 'Toggle dark mode using the moon icon in the top right navbar.',
+    'help': 'I can help with: posting, exploring, messaging, reels, stories, profile, dark mode, and more!',
+    'default': 'Sorry, I didn\'t understand that. Try asking about posting, exploring, or other features!'
+  };
+
+  function getResponse(message) {
+    const lowerMsg = message.toLowerCase();
+    for (let key in responses) {
+      if (lowerMsg.includes(key)) {
+        return responses[key];
+      }
+    }
+    return responses['default'];
+  }
+
+  // Send message
+  function sendMessage() {
+    const text = inputEl.value.trim();
+    if (!text) return;
+    addMessage(text, 'user');
+    chatHistory.push({ text, sender: 'user' });
+    inputEl.value = '';
+
+    // Typing indicator
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'message bot typing';
+    typingDiv.textContent = 'Typing...';
+    messagesEl.appendChild(typingDiv);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+
+    setTimeout(() => {
+      const response = getResponse(text);
+      if (response.startsWith('navigate:')) {
+        typingDiv.remove();
+        const page = response.split(':')[1];
+        window.location.href = page;
+      } else {
+        typingDiv.remove();
+        addMessage(response, 'bot');
+        chatHistory.push({ text: response, sender: 'bot' });
+        saveHistory();
+      }
+    }, 1000);
+  }
+
+  // Quick actions
+  quickActions.addEventListener('click', (e) => {
+    if (e.target.classList.contains('quick-btn')) {
+      const question = e.target.textContent;
+      if (question === 'Watch reels') {
+        window.location.href = 'reels.html';
+      } else if (question === 'Explore features') {
+        window.location.href = 'explore.html';
+      } else if (question === 'My profile') {
+        window.location.href = 'profile.html';
+      } else if (question === 'Send message') {
+        window.location.href = 'message.html';
+      } else if (question === 'Add story') {
+        window.location.href = 'home.html';
+      } else {
+        inputEl.value = question;
+        sendMessage();
+      }
+    }
+  });
+
+  // Event listeners
+  toggle.addEventListener('click', () => {
+    windowEl.style.display = windowEl.style.display === 'none' ? 'block' : 'none';
+    if (windowEl.style.display === 'block') {
+      loadHistory();
+      inputEl.focus();
+    }
+  });
+
+  closeBtn.addEventListener('click', () => {
+    windowEl.style.display = 'none';
+  });
+
+  sendBtn.addEventListener('click', sendMessage);
+  inputEl.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') sendMessage();
+  });
+
+  // Dark mode sync
+  function updateDarkMode() {
+    isDark = document.body.classList.contains('dark');
+    windowEl.classList.toggle('dark', isDark);
+  }
+  updateDarkMode();
+  // Listen for dark mode changes (assuming toggleDarkMode is global)
+  if (typeof toggleDarkMode === 'function') {
+    const originalToggle = toggleDarkMode;
+    toggleDarkMode = function() {
+      originalToggle();
+      updateDarkMode();
+    };
+  }
+
+  // Initial greeting if no history
+  if (chatHistory.length === 0) {
+    addMessage('Hi! I\'m Wings Chatbot. How can I assist you today?', 'bot');
+    chatHistory.push({ text: 'Hi! I\'m Wings Chatbot. How can I assist you today?', sender: 'bot' });
+    saveHistory();
+  }
+});
+</script>
+<button id="chatbot-toggle">💬</button>
+<div id="chat-window">
+  <div id="chat-header">
+    Wings Chatbot
+    <button id="close-chat">×</button>
+  </div>
+  <div id="chat-messages"></div>
+  <div id="quick-actions">
+    <button class="quick-btn">How to post?</button>
+    <button class="quick-btn">Explore features</button>
+    <button class="quick-btn">My profile</button>
+    <button class="quick-btn">Send message</button>
+    <button class="quick-btn">Watch reels</button>
+    <button class="quick-btn">Add story</button>
+  </div>
+  <div id="chat-input-area">
+    <input type="text" id="chat-input" placeholder="Type your message...">
+    <button id="send-btn">Send</button>
+  </div>
+</div>
+</div>
+</html>

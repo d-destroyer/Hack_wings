@@ -1,0 +1,91 @@
+<!-- Reusable Comment Section Component -->
+<!-- Include this in your HTML pages and add the JavaScript functions to your script section -->
+
+<style>
+.comment-modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(6px);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.comment-content {
+  background: #1b1f25;
+  border-radius: 16px;
+  width: 400px;
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: 1rem;
+  box-shadow: 0 0 20px rgba(255,255,255,0.1);
+}
+.comment {
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding: .5rem 0;
+}
+.comment small {
+  color: #aaa;
+  display: block;
+}
+.comment-input {
+  display: flex;
+  gap: .5rem;
+  margin-top: 1rem;
+}
+.comment-input input {
+  flex: 1;
+  padding: .5rem;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+}
+.comment-input button {
+  background: #6ed6c3;
+  border: none;
+  padding: .5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background .2s;
+  color: #fff;
+}
+.comment-input button:hover {
+  background: #56b9a8;
+}
+.comment-input button:disabled {
+  background: #555;
+  cursor: not-allowed;
+}
+.close-btn {
+  float: right;
+  cursor: pointer;
+  color: #ffb28b;
+  font-size: 1.5rem;
+}
+.comment-icon {
+  cursor: pointer;
+  color: #6ed6c3;
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  transition: transform 0.2s;
+}
+.comment-icon:hover { transform: scale(1.1); }
+</style>
+
+<div class="comment-modal" id="commentModal">
+  <div class="comment-content">
+    <span class="close-btn" id="closeCommentModal">&times;</span>
+    <h3>Comments</h3>
+    <div id="commentsList"></div>
+
+    <div class="comment-input">
+      <input type="text" id="newComment" placeholder="Add a comment..." maxlength="200">
+      <button id="submitComment">Post</button>
+    </div>
+  </div>
+</div>

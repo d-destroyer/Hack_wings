@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WINGS 🪽 | Feed with Comments</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #0b0f14;
+  color: #fff;
+  margin: 0;
+  padding: 2rem;
+}
+.post {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  box-shadow: 0 0 10px rgba(255,255,255,0.1);
+}
+.post h3 {
+  margin: 0 0 .5rem 0;
+  color: #b4e1fa;
+}
+.comment-icon {
+  cursor: pointer;
+  color: #6ed6c3;
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  transition: transform 0.2s;
+}
+.comment-icon:hover { transform: scale(1.1); }
+
+.comment-modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(6px);
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+.comment-content {
+  background: #1b1f25;
+  border-radius: 16px;
+  width: 400px;
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: 1rem;
+  box-shadow: 0 0 20px rgba(255,255,255,0.1);
+}
+.comment {
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding: .5rem 0;
+}
+.comment small {
+  color: #aaa;
+  display: block;
+}
+.comment-input {
+  display: flex;
+  gap: .5rem;
+  margin-top: 1rem;
+}
+.comment-input input {
+  flex: 1;
+  padding: .5rem;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+}
+.comment-input button {
+  background: #6ed6c3;
+  border: none;
+  padding: .5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background .2s;
+}
+.comment-input button:hover {
+  background: #56b9a8;
+}
+.close-btn {
+  float: right;
+  cursor: pointer;
+  color: #ffb28b;
+}
+</style>
+</head>
+<body>
+
+<!-- Example Post -->
+<div class="post" data-id="1">
+  <h3>@alex_wings</h3>
+  <p>Just launched the new WINGS interface 🚀</p>
+  <div class="comment-icon">
+    <i class="fa-regular fa-comment"></i>
+    <span class="comment-count">0</span>
+  </div>
+</div>
+
+<!-- Comment Modal -->
+<div class="comment-modal" id="commentModal">
+  <div class="comment-content">
+    <span class="close-btn">&times;</span>
+    <h3>Comments</h3>
+    <div id="commentsList"></div>
+
+    <div class="comment-input">
+      <input type="text" id="newComment" placeholder="Add a comment...">
+      <button id="submitComment">Post</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// --- Variables ---
+const modal = document.getElementById('commentModal');
+const commentsList = document.getElementById('commentsList');
+const newComment = document.getElementById('newComment');
+const submitBtn = document.getElementById('submitComment');
+const closeBtn = document.querySelector('.close-btn');
+let currentPostId = null;
+
+// --- Event Listeners ---
+document.querySelectorAll('.comment-icon').forEach(icon => {
+  icon.addEventListener('click', async (e) => {
+    const post = e.target.closest('.post');
+    currentPostId = post.dataset.id;
+    modal.style.display = 'flex';
+    await loadComments(currentPostId);
+  });
+});
+
+closeBtn.addEventListener('click', () => modal.style.display = 'none');
+
+submitBtn.addEventListener('click', async () => {
+  const text = newComment.value.trim();
+  if (!text) return alert('Comment cannot be empty!');
+  try {
+    const res = await fetch(`/posts/${currentPostId}/comment`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user: 'Divyansh', text })
+    });
+    if (!res.ok) throw new Error('Failed to add comment');
+    newComment.value = '';
+    await loadComments(currentPostId);
+    updateCommentCount(currentPostId);
+  } catch (err) {
+    alert(err.message);
+  }
+});
+
+async function loadComments(postId) {
+  commentsList.innerHTML = '<p>Loading...</p>';
+  try {
+    const res = await fetch(`/posts/${postId}/comments`);
+    const comments = await res.json();
+    commentsList.innerHTML = comments.map(c => `
+      <div class="comment">
+        <strong>${c.user}</strong>
+        <p>${c.text}</p>
+        <small>${new Date(c.timestamp).toLocaleString()}</small>
+      </div>
+    `).join('') || '<p>No comments yet.</p>';
+  } catch {
+    commentsList.innerHTML = '<p>Failed to load comments.</p>';
+  }
+}
+
+async function updateCommentCount(postId) {
+  try {
+    const res = await fetch(`/posts/${postId}/comments`);
+    const comments = await res.json();
+    document.querySelector(`.post[data-id="${postId}"] .comment-count`).innerText = comments.length;
+  } catch {}
+}
+</script>
+</body>
+<div id="wings-chatbot">
+<style>
+#chatbot-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #6ed6c3, #b48efa, #ffb28b);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 24px;
+  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease;
+}
+#chatbot-toggle:hover {
+  transform: scale(1.1);
+}
+#chat-window {
+  display: none;
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 350px;
+  height: 500px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  z-index: 1000;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+}
+#chat-window.dark {
+  background-color: #2c2c2c;
+  color: white;
+  border-color: #555;
+}
+#chat-header {
+  background: linear-gradient(135deg, #6ed6c3, #b48efa);
+  color: white;
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+#close-chat {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+#chat-messages {
+  height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+  background: #f9f9f9;
+}
+#chat-window.dark #chat-messages {
+  background: #1e1e1e;
+}
+.message {
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  max-width: 80%;
+}
+.message.user {
+  background: #007bff;
+  color: white;
+  margin-left: auto;
+  text-align: right;
+}
+.message.bot {
+  background: #e9ecef;
+  color: #333;
+}
+#chat-window.dark .message.bot {
+  background: #444;
+  color: white;
+}
+#quick-actions {
+  padding: 10px;
+  border-top: 1px solid #ccc;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+#chat-window.dark #quick-actions {
+  border-color: #555;
+}
+.quick-btn {
+  background: #6ed6c3;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 0.3s;
+}
+.quick-btn:hover {
+  background: #56b9a8;
+}
+#chat-input-area {
+  display: flex;
+  border-top: 1px solid #ccc;
+}
+#chat-window.dark #chat-input-area {
+  border-color: #555;
+}
+#chat-input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  outline: none;
+  background: white;
+}
+#chat-window.dark #chat-input {
+  background: #2c2c2c;
+  color: white;
+}
+#send-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+#send-btn:hover {
+  background: #0056b3;
+}
+.typing {
+  font-style: italic;
+  color: #666;
+}
+#chat-window.dark .typing {
+  color: #ccc;
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const toggle = document.getElementById('chatbot-toggle');
+  const windowEl = document.getElementById('chat-window');
+  const closeBtn = document.getElementById('close-chat');
+  const messagesEl = document.getElementById('chat-messages');
+  const inputEl = document.getElementById('chat-input');
+  const sendBtn = document.getElementById('send-btn');
+  const quickActions = document.getElementById('quick-actions');
+
+  let chatHistory = JSON.parse(localStorage.getItem('wingsChatHistory')) || [];
+  let isDark = document.body.classList.contains('dark');
+
+  // Load history
+  function loadHistory() {
+    messagesEl.innerHTML = '';
+    chatHistory.forEach(msg => {
+      addMessage(msg.text, msg.sender);
+    });
+  }
+
+  // Save history
+  function saveHistory() {
+    localStorage.setItem('wingsChatHistory', JSON.stringify(chatHistory));
+  }
+
+  // Add message
+  function addMessage(text, sender) {
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `message ${sender}`;
+    msgDiv.textContent = text;
+    messagesEl.appendChild(msgDiv);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  // Bot responses
+  const responses = {
+    'hello': 'Hi there! How can I help you with Wings?',
+    'hi': 'Hello! Welcome to Wings. What would you like to know?',
+    'how to post': 'To post, click the + icon in the sidebar, select a photo/video, add a caption, and post!',
+    'explore': 'navigate:explore.html',
+    'profile': 'navigate:profile.html',
+    'message': 'navigate:message.html',
+    'reel': 'navigate:reels.html',
+    'story': 'navigate:home.html', // assuming stories are on home
+    'dark mode': 'Toggle dark mode using the moon icon in the top right navbar.',
+    'help': 'I can help with: posting, exploring, messaging, reels, stories, profile, dark mode, and more!',
+    'default': 'Sorry, I didn\'t understand that. Try asking about posting, exploring, or other features!'
+  };
+
+  function getResponse(message) {
+    const lowerMsg = message.toLowerCase();
+    for (let key in responses) {
+      if (lowerMsg.includes(key)) {
+        return responses[key];
+      }
+    }
+    return responses['default'];
+  }
+
+  // Send message
+  function sendMessage() {
+    const text = inputEl.value.trim();
+    if (!text) return;
+    addMessage(text, 'user');
+    chatHistory.push({ text, sender: 'user' });
+    inputEl.value = '';
+
+    // Typing indicator
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'message bot typing';
+    typingDiv.textContent = 'Typing...';
+    messagesEl.appendChild(typingDiv);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+
+    setTimeout(() => {
+      const response = getResponse(text);
+      if (response.startsWith('navigate:')) {
+        typingDiv.remove();
+        const page = response.split(':')[1];
+        window.location.href = page;
+      } else {
+        typingDiv.remove();
+        addMessage(response, 'bot');
+        chatHistory.push({ text: response, sender: 'bot' });
+        saveHistory();
+      }
+    }, 1000);
+  }
+
+  // Quick actions
+  quickActions.addEventListener('click', (e) => {
+    if (e.target.classList.contains('quick-btn')) {
+      const question = e.target.textContent;
+      if (question === 'Watch reels') {
+        window.location.href = 'reels.html';
+      } else if (question === 'Explore features') {
+        window.location.href = 'explore.html';
+      } else if (question === 'My profile') {
+        window.location.href = 'profile.html';
+      } else if (question === 'Send message') {
+        window.location.href = 'message.html';
+      } else if (question === 'Add story') {
+        window.location.href = 'home.html';
+      } else {
+        inputEl.value = question;
+        sendMessage();
+      }
+    }
+  });
+
+  // Event listeners
+  toggle.addEventListener('click', () => {
+    windowEl.style.display = windowEl.style.display === 'none' ? 'block' : 'none';
+    if (windowEl.style.display === 'block') {
+      loadHistory();
+      inputEl.focus();
+    }
+  });
+
+  closeBtn.addEventListener('click', () => {
+    windowEl.style.display = 'none';
+  });
+
+  sendBtn.addEventListener('click', sendMessage);
+  inputEl.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') sendMessage();
+  });
+
+  // Dark mode sync
+  function updateDarkMode() {
+    isDark = document.body.classList.contains('dark');
+    windowEl.classList.toggle('dark', isDark);
+  }
+  updateDarkMode();
+  // Listen for dark mode changes (assuming toggleDarkMode is global)
+  if (typeof toggleDarkMode === 'function') {
+    const originalToggle = toggleDarkMode;
+    toggleDarkMode = function() {
+      originalToggle();
+      updateDarkMode();
+    };
+  }
+
+  // Initial greeting if no history
+  if (chatHistory.length === 0) {
+    addMessage('Hi! I\'m Wings Chatbot. How can I assist you today?', 'bot');
+    chatHistory.push({ text: 'Hi! I\'m Wings Chatbot. How can I assist you today?', sender: 'bot' });
+    saveHistory();
+  }
+});
+</script>
+<button id="chatbot-toggle">💬</button>
+<div id="chat-window">
+  <div id="chat-header">
+    Wings Chatbot
+    <button id="close-chat">×</button>
+  </div>
+  <div id="chat-messages"></div>
+  <div id="quick-actions">
+    <button class="quick-btn">How to post?</button>
+    <button class="quick-btn">Explore features</button>
+    <button class="quick-btn">My profile</button>
+    <button class="quick-btn">Send message</button>
+    <button class="quick-btn">Watch reels</button>
+    <button class="quick-btn">Add story</button>
+  </div>
+  <div id="chat-input-area">
+    <input type="text" id="chat-input" placeholder="Type your message...">
+    <button id="send-btn">Send</button>
+  </div>
+</div>
+</div>
+</html>

@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale="1.0">
+  <title>WINGS 🪽 | Standpoint</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root{
+      --bg:#f6fbff;
+      --card:#ffffffcc;
+      --glass: rgba(255,255,255,0.6);
+      --teal:#6ed6c3;
+      --purple:#b48efa;
+      --muted:#9aa3ad;
+      --accent-gradient: linear-gradient(135deg,var(--teal),var(--purple));
+      --radius:18px;
+      font-family: 'Poppins', sans-serif;
+    }
+    html,body{height:100%;}
+    body {
+       background: url("assets/background.jpg") center/cover no-repeat fixed;
+       min-height:100vh;
+       color:#333;
+       transition: background 0.5s ease;
+     }
+
+     body.dark {
+       background: linear-gradient(135deg, #0f0f0f, #1a1a1a) fixed;
+     }
+     img {display:block; max-width:100%; object-fit: cover;}
+
+     /* --- HEADER --- */
+     header {
+       position:sticky; top:0; z-index:10;
+       background:rgba(255,255,255,0.85);
+       backdrop-filter:blur(8px);
+       border-bottom:1px solid #ddd;
+     }
+     .navbar {
+       max-width:950px; margin:auto;
+       display:flex; justify-content:space-between; align-items:center;
+       padding:12px 20px;
+     }
+     .logo {font-size:26px; font-weight:700; letter-spacing:1px;}
+     .search-box {
+       display:none;
+     }
+     @media(min-width:600px){
+       .search-box{display:flex; align-items:center; background:#f2f2f2; border-radius:8px; padding:5px 10px;}
+       .search-box input{border:none; background:none; outline:none; font-size:14px;}
+     }
+     .nav-icons {display:flex; align-items:center; gap:20px;}
+     .nav-icons img {width:24px; cursor:pointer; transition: transform 0.2s;}
+     .nav-icons img:hover {transform:scale(1.2);}
+
+     /* --- MAIN LAYOUT --- */
+     main {display:flex; justify-content:center; gap:40px; padding:30px 15px; margin-left:90px; transition: margin-left 0.5s ease;}
+     .navbar:hover ~ main { margin-left: 220px; }
+     .feed {max-width:470px; width:100%;}
+
+     /* --- NAVBAR BASE --- */
+     .navbar {
+       position: fixed;
+       left: 0;
+       top: 0;
+       width: 90px;
+       height: 100%;
+       background: rgba(255,255,255,0.85);
+       backdrop-filter: blur(15px);
+       box-shadow: 2px 0 15px rgba(0,0,0,0.1);
+       display: flex;
+       flex-direction: column;
+       align-items: center;
+       padding-top: 25px;
+       transition: all 0.5s ease;
+       overflow: hidden;
+       z-index: 10;
+     }
+
+     /* --- BACKGROUND IMAGE ON HOVER --- */
+     .navbar::before {
+       content: "";
+       position: absolute;
+       inset: 0;
+       background: url("assets/temp_image_1760002423274.jpeg") center/cover no-repeat;
+       opacity: 0;
+       transform: scale(1.1) translateX(var(--mx)) translateY(var(--my));
+       transition: opacity 0.5s ease, transform 0.3s ease;
+       z-index: -1;
+     }
+
+     .navbar:hover {
+       width: 220px;
+     }
+
+     .navbar:hover::before {
+       opacity: 1;
+       transform: scale(1) translateX(var(--mx)) translateY(var(--my));
+     }
+
+     .side-navbar.dark {
+       background: rgba(26, 26, 26, 0.95) !important;
+     }
+
+     .side-navbar.dark::before {
+       opacity: 0 !important;
+     }
+
+     /* --- NAV ITEMS --- */
+     .nav-item {
+       width: 85%;
+       margin: 0;
+       padding: 6px;
+       display: flex;
+       align-items: center;
+       gap: 9px;
+       border-radius: 12px;
+       color: #333;
+       cursor: pointer;
+       transition: all 0.3s ease;
+     }
+     .nav-item i {
+       font-size: 1.4rem;
+       min-width: 30px;
+       text-align: center;
+       color: #fff;
+     }
+     .nav-item span {
+       opacity: 0;
+       transform: translateX(-10px);
+       transition: opacity 0.4s ease, transform 0.4s ease;
+       white-space: nowrap;
+       font-weight: bold;
+       color: #fff;
+     }
+     .navbar:hover .nav-item span {
+       opacity: 1;
+       transform: translateX(0);
+     }
+     .nav-item:hover {
+       background: var(--glow);
+       color: #fff;
+       box-shadow: 0 0 20px rgba(180,142,250,0.6), 0 0 40px rgba(110,214,195,0.3);
+       transform: translateX(8px);
+     }
+     .nav-item.active {
+       background: var(--glow);
+       color: #fff;
+     }
+
+     /* --- RIGHT NAVBAR --- */
+     .right-navbar {
+       position: fixed;
+       right: 0;
+       top: 0;
+       width: 90px;
+       height: 100%;
+       background: rgba(255,255,255,0.85);
+       backdrop-filter: blur(15px);
+       box-shadow: -2px 0 15px rgba(0,0,0,0.1);
+       display: flex;
+       flex-direction: column;
+       align-items: center;
+       padding-top: 25px;
+       transition: all 0.5s ease;
+       overflow: hidden;
+       z-index: 10;
+     }
+
+     /* --- BACKGROUND IMAGE ON HOVER --- */
+     .right-navbar::before {
+       content: "";
+       position: absolute;
+       inset: 0;
+       background: url("assets/temp_image_1760002423274.jpeg") center/cover no-repeat;
+       opacity: 0;
+       transform: scale(1.1) translateX(var(--mx)) translateY(var(--my));
+       transition: opacity 0.5s ease, transform 0.3s ease;
+       z-index: -1;
+     }
+
+     .right-navbar:hover {
+       width: 220px;
+     }
+
+     .right-navbar:hover::before {
+       opacity: 1;
+       transform: scale(1) translateX(var(--mx)) translateY(var(--my));
+     }
+
+     .right-navbar.dark {
+       background: rgba(26, 26, 26, 0.95) !important;
+     }
+
+     .right-navbar.dark::before {
+       opacity: 0 !important;
+     }
+
+     .right-navbar .nav-item {
+       width: 85%;
+       margin: 0;
+       padding: 6px;
+       display: flex;
+       align-items: center;
+       gap: 9px;
+       border-radius: 12px;
+       color: #333;
+       cursor: pointer;
+       transition: all 0.3s ease;
+     }
+
+     .right-navbar .nav-item i {
+       font-size: 1.4rem;
+       min-width: 30px;
+       text-align: center;
+       color: #fff;
+     }
+
+     .right-navbar .nav-item span {
+       opacity: 0;
+       transform: translateX(-10px);
+       transition: opacity 0.4s ease, transform 0.4s ease;
+       white-space: nowrap;
+       font-weight: bold;
+       color: #fff;
+     }
+
+     .right-navbar:hover .nav-item span {
+       opacity: 1;
+       transform: translateX(0);
+     }
+
+     .right-navbar .nav-item:hover {
+       background: var(--glow);
+       color: #fff;
+       box-shadow: 0 0 20px rgba(180,142,250,0.6), 0 0 40px rgba(110,214,195,0.3);
+       transform: translateX(-8px);
+     }
+
+     .badge {
+       background: #ff4757;
+       color: white;
+       border-radius: 50%;
+       padding: 2px 6px;
+       font-size: 10px;
+       position: absolute;
+       top: -5px;
+       right: -5px;
+       min-width: 18px;
+       text-align: center;
+     }
+
+     /* --- SIDEBAR --- */
+     .sidebar {display:none;}
+     @media(min-width:992px){
+       .sidebar {display:flex; flex-direction:column; width:300px; gap:20px;}
+       .sidebar {position: fixed; right: 90px; top: 100px;}
+       .profile-box, .suggestions, .network-stats {background:rgba(255,255,255,0.9); border-radius:12px; border:1px solid #e3e3e3; padding:16px;}
+       .network-stats {margin-top: 20px;}
+       .network-card {background: rgba(255,255,255,0.9); border-radius:12px; border:1px solid #e3e3e3; padding:12px; margin-top:20px;}
+       .network-header {display:flex; align-items:center; gap:8px; margin-bottom:6px;}
+       .network-dot {width:10px; height:10px; border-radius:50%; background:linear-gradient(45deg,#34d399,#06b6d4); box-shadow:0 2px 6px rgba(6,182,212,0.2);}
+       .network-title {font-size:14px; margin:0; font-weight:600;}
+       .network-grid {display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:8px;}
+       .network-tile {background:rgba(0,0,0,0.05); padding:8px; border-radius:8px;}
+       .network-label {font-size:11px; color:#666; margin-bottom:4px;}
+       .network-value {font-size:14px; font-weight:600;}
+       .network-small {font-size:10px; color:#666; margin-top:4px;}
+       .network-timer {background:rgba(0,0,0,0.03); padding:8px; border-radius:6px; margin-bottom:8px;}
+       .network-btn {width:100%; padding:6px; border-radius:6px; border:0; background:#6ed6c3; color:white; cursor:pointer; font-weight:600; font-size:12px;}
+       .network-status {font-size:10px; color:#666; margin-top:4px;}
+       .screen-time {position: fixed; bottom: 20px; right: 20px; width: 280px; background:rgba(255,255,255,0.9); border-radius:12px; border:1px solid #e3e3e3; padding:20px; font-size: 16px; z-index: 5;}
+       .screen-time h4 {font-size: 18px; margin-bottom: 10px;}
+       .screen-time #screenTimeDisplay {font-size: 20px; font-weight: bold;}
+       .network-stats {transition: all 0.5s ease;}
+       .profile-box {display:flex; align-items:center; justify-content:space-between;}
+       .profile-box img {width:50px; height:50px; border-radius:50%;}
+       .profile-info {flex:1; margin-left:10px;}
+       .profile-info p:first-child {font-weight:600;}
+       .suggestions h4 {font-size:14px; color:#777; margin-bottom:10px;}
+       .suggestion {display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;}
+       .suggestion img {width:34px; height:34px; border-radius:50%;}
+       .suggestion p {font-size:13px; font-weight:600;}
+       .suggestion button {background:none; border:none; color:#0095f6; font-weight:600; cursor:pointer;}
+       .fact-item {transition: none !important;}
+       .fact-item:hover {transform: none !important; background: none !important;}
+     }
+
+     /* Standpoint specific styles */
+     .standpoint-container {
+       max-width: 600px;
+       width: 100%;
+       padding: 20px;
+     }
+
+     .standpoint-container h1 {
+       color: #ffffff !important;
+       font-weight: 900;
+       text-shadow: 0 2px 4px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.3);
+     }
+
+     .standpoint-container .lead {
+       color: #ffffff !important;
+       font-weight: 700;
+       text-shadow: 0 1px 3px rgba(0,0,0,0.7), 0 0 15px rgba(255,255,255,0.2);
+     }
+
+     .standpoint-container .local-time {
+       color: #ffffff !important;
+       font-weight: 600;
+       text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+     }
+
+     .standpoint-container .local-demo {
+       color: #ffffff !important;
+       font-weight: 700;
+       text-shadow: 0 1px 3px rgba(0,0,0,0.7), 0 0 15px rgba(255,255,255,0.2);
+     }
+
+    .container{width:900px;max-width:100%;}
+    h1{margin:0 0 6px 0;font-size:22px}
+    p.lead{margin:0;color:var(--muted);font-size:13px}
+
+    /* Composer */
+    .composer{
+      background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(247,251,255,0.7));
+      border-radius:var(--radius);
+      padding:14px;
+      box-shadow: 0 6px 20px rgba(16,32,39,0.06);
+      border:1px solid rgba(255,255,255,0.5);
+    }
+    .composer-inner{display:flex;gap:12px}
+    .avatar{
+      width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;background:var(--accent-gradient);box-shadow:inset 0 -4px 8px rgba(0,0,0,0.06);
+    }
+    .composer-body{flex:1}
+    .display-name{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+    .display-name input{width:180px;padding:8px 10px;border-radius:10px;border:1px solid #e8eef2;background:white;font-size:13px}
+    .composer textarea{width:100%;min-height:96px;resize:vertical;padding:10px;border-radius:12px;border:1px solid #eef4f8;background:rgba(255,255,255,0.95);font-size:15px}
+
+    .composer .controls{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+    .controls-left{display:flex;gap:8px;align-items:center}
+    .btn{border:0;padding:8px 12px;border-radius:10px;background:white;border:1px solid rgba(0,0,0,0.04);cursor:pointer}
+    .btn.secondary{background:transparent}
+    .post-btn{background:var(--accent-gradient);color:white;border:none;padding:8px 14px;border-radius:12px;font-weight:600}
+
+    .image-preview{margin-top:10px;position:relative}
+    .image-preview img{max-height:260px;width:100%;object-fit:cover;border-radius:12px;box-shadow:0 8px 20px rgba(16,32,39,0.06)}
+    .remove-image{position:absolute;right:8px;top:8px;background:rgba(255,255,255,0.85);border-radius:999px;padding:6px;border:1px solid rgba(0,0,0,0.06);cursor:pointer}
+
+    /* Feed */
+    .feed{margin-top:18px;display:flex;flex-direction:column;gap:14px}
+    .post{background:var(--card);border-radius:16px;padding:14px;border:1px solid rgba(255,255,255,0.6);box-shadow:0 6px 20px rgba(16,32,39,0.04);}
+    .post-head{display:flex;gap:12px;align-items:flex-start}
+    .meta{flex:1}
+    .meta .name{font-weight:700}
+    .meta .handle{color:var(--muted);font-size:13px;margin-left:8px}
+    .meta .ts{color:var(--muted);font-size:12px}
+    .post-body{margin-top:10px;font-size:15px;white-space:pre-wrap}
+    .post img{margin-top:10px;max-height:420px;width:100%;object-fit:cover;border-radius:12px}
+
+    .post-actions{display:flex;gap:10px;align-items:center;margin-top:10px}
+    .action{display:flex;gap:8px;align-items:center;padding:6px 8px;border-radius:10px;cursor:pointer;border:1px solid transparent}
+    .action:hover{background:rgba(255,255,255,0.6)}
+    .count{font-size:13px;color:var(--muted)}
+
+    /* subtle glow variant for each post */
+    .post[data-glow="true"]{box-shadow:0 10px 30px rgba(116, 48, 255, 0.06), 0 4px 12px rgba(16,32,39,0.04)}
+
+    /* Responsive */
+    @media (max-width:600px){
+      .display-name input{width:120px}
+      .avatar{width:48px;height:48px}
+    }
+
+    /* Comment Modal */
+    .post-comment-modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(6px);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .post-comment-content {
+      background: #1b1f25;
+      border-radius: 16px;
+      width: 400px;
+      max-height: 70vh;
+      overflow-y: auto;
+      padding: 1rem;
+      box-shadow: 0 0 20px rgba(255,255,255,0.1);
+    }
+    .post-comment {
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding: .5rem 0;
+    }
+    .post-comment small {
+      color: #aaa;
+      display: block;
+    }
+    .post-comment-input {
+      display: flex;
+      gap: .5rem;
+      margin-top: 1rem;
+    }
+    .post-comment-input input {
+      flex: 1;
+      padding: .5rem;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+    }
+    .post-comment-input button {
+      background: #6ed6c3;
+      border: none;
+      padding: .5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background .2s;
+      color: #fff;
+    }
+    .post-comment-input button:hover {
+      background: #56b9a8;
+    }
+    .post-close-btn {
+      float: right;
+      cursor: pointer;
+      color: #ffb28b;
+      font-size: 1.5rem;
+    }
+
+  </style>
+  <style>
+    #wings-vertical {
+      position: fixed;
+      left: 200px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: white;
+      font-weight: bold;
+      font-family: 'Algerian', sans-serif;
+      font-size: 65px;
+      line-height: 1;
+      text-shadow: 0 0 10px rgba(255,255,255,0.5);
+      z-index: 5;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<div id="wings-vertical">W<br>I<br>N<br>G<br>S</div>
+
+<header>
+  <div class="navbar">
+    <div class="logo">WINGS 🪽</div>
+    <div class="search-box">
+      🔍 <input type="text" placeholder="Search..." id="searchInput" />
+    </div>
+    <div class="nav-icons">
+      <img src="https://img.icons8.com/ios/50/home.png" onclick="window.location.href='home.html'" />
+      <img src="https://img.icons8.com/ios/50/sent.png" onclick="window.location.href='message.html'" />
+      <img id="themeToggle" src="https://img.icons8.com/ios/50/moon-symbol.png" title="Toggle Dark Mode"/>
+      <img src="https://img.icons8.com/ios/50/like--v1.png" onclick="window.location.href='noti.html'" />
+    </div>
+  </div>
+</header>
+
+<!-- NAVBAR -->
+<div class="navbar side-navbar">
+  <div class="nav-item" onclick="window.location.href='home.html'">
+    <i class="fa-solid fa-house"></i>
+    <span>Home</span>
+  </div>
+  <div class="nav-item" onclick="window.location.href='message.html'">
+    <i class="fa-solid fa-message"></i>
+    <span>Message</span>
+  </div>
+  <div class="nav-item" onclick="window.location.href='reels.html'">
+    <i class="fa-solid fa-clapperboard"></i>
+    <span>Reel</span>
+  </div>
+  <div class="nav-item" onclick="window.location.href='explore.html'">
+    <i class="fa-solid fa-compass"></i>
+    <span>Explore</span>
+  </div>
+  <div class="nav-item active" onclick="window.location.href='st.html'">
+    <i class="fa-solid fa-lightbulb"></i>
+    <span>Standpoint</span>
+  </div>
+  <div class="nav-item" onclick="goProfile()">
+    <i class="fa-solid fa-user"></i>
+    <span>Profile</span>
+  </div>
+</div>
+
+<main>
+  <section class="feed">
+    <div class="standpoint-container">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div>
+          <h1>Standpoint</h1>
+          <p class="lead">Share short thoughts — pastel WINGS aesthetic.</p>
+        </div>
+        <div class="local-demo" style="text-align:right;font-size:13px">Local demo · <span id="local-time"></span></div>
+      </div>
+
+      <div class="composer" id="composer">
+        <div class="composer-inner">
+          <div class="avatar" id="composer-avatar">Y</div>
+          <div class="composer-body">
+            <div class="display-name">
+              <input id="displayName" placeholder="Display name" value="You" />
+              <div style="font-size:12px;color:var(--muted);">280 chars</div>
+            </div>
+            <textarea id="postText" placeholder="What's your standpoint? (280)" maxlength="280"></textarea>
+
+            <div id="imagePreviewWrap"></div>
+
+            <div class="controls">
+              <div class="controls-left">
+                <label class="btn" style="cursor:pointer">
+                  Add image
+                  <input id="imageInput" type="file" accept="image/*" style="display:none" />
+                </label>
+                <div style="font-size:13px;color:var(--muted)" id="charCount">0/280</div>
+              </div>
+              <div>
+                <button id="clearBtn" class="btn secondary">Clear</button>
+                <button id="postBtn" class="post-btn">Post</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="feed" id="feed"></div>
+    </div>
+  </section>
+
+  <aside class="sidebar">
+    <div class="profile-box">
+      <img src="https://i.pravatar.cc/60" alt="divyansh_srivastav">
+      <div class="profile-info">
+        <p>divyansh_srivastav</p>
+        <p style="color:gray;font-size:13px;">Welcome back!</p>
+      </div>
+      <button onclick="window.location.href='login.html'">Switch</button>
+    </div>
+    <div class="suggestions">
+      <h4>Suggestions for you</h4>
+      <div id="suggestions"></div>
+    </div>
+  </aside>
+</main>
+
+<!-- Right Navbar -->
+<div class="right-navbar">
+  <div class="nav-item" onclick="showNotifications()">
+    <i class="fa-solid fa-bell"></i>
+    <span>Notifications</span>
+    <span id="notificationBadge" class="badge" style="display:none;"></span>
+  </div>
+  <div class="nav-item" onclick="logout()">
+    <i class="fa-solid fa-right-from-bracket"></i>
+    <span>Log Out</span>
+  </div>
+  <div class="nav-item" onclick="toggleDarkMode()">
+    <i class="fa-solid fa-moon"></i>
+    <span>Dark Mode</span>
+  </div>
+  <div class="nav-item" onclick="switchAccount()">
+    <i class="fa-solid fa-users"></i>
+    <span>Switch Account</span>
+  </div>
+</div>
+
+  <template id="postTpl">
+    <article class="post">
+      <div class="post-head">
+        <div class="avatar">A</div>
+        <div class="meta">
+          <div>
+            <span class="name">Alice</span>
+            <span class="handle">@alice</span>
+            <span class="ts">· just now</span>
+          </div>
+          <div class="post-body">Hello world</div>
+        </div>
+      </div>
+      <img class="post-image" src="" alt="" style="display:none" />
+      <div class="post-actions">
+        <div class="action like">❤ <span class="count">0</span></div>
+        <div class="action comment">💬 <span class="count">0</span></div>
+        <div class="action share">🔁 <span class="count">0</span></div>
+      </div>
+    </article>
+  </template>
+
+  <script>
+    // Parallax cursor effect
+    const navbar = document.querySelector('.navbar');
+    navbar.addEventListener('mousemove', e => {
+      const rect = navbar.getBoundingClientRect();
+      const mx = ((e.clientX - rect.left) / rect.width - 0.5) * 20;
+      const my = ((e.clientY - rect.top) / rect.height - 0.5) * 20;
+      navbar.style.setProperty('--mx', mx + 'px');
+      navbar.style.setProperty('--my', my + 'px');
+    });
+    navbar.addEventListener('mouseleave', () => {
+      navbar.style.setProperty('--mx', '0px');
+      navbar.style.setProperty('--my', '0px');
+    });
+
+    // Helpers
+    const qs = (s, el=document)=>el.querySelector(s);
+    const qsa = (s, el=document)=>Array.from(el.querySelectorAll(s));
+    
+    function timeAgo(iso){
+      const d=new Date(iso);
+      const s=Math.floor((Date.now()-d.getTime())/1000);
+      if(s<5) return 'just now';
+      if(s<60) return s+'s';
+      const m=Math.floor(s/60); if(m<60) return m+'m';
+      const h=Math.floor(m/60); if(h<24) return h+'h';
+      const days=Math.floor(h/24); if(days<7) return days+'d';
+      return d.toLocaleDateString();
+    }
+    
+    // Interesting facts for suggestions
+    const interestingFacts = [
+      "Honey never spoils. Archaeologists have found pots of honey in ancient Egyptian tombs that are over 3,000 years old and still perfectly edible.",
+      "A group of flamingos is called a 'flamboyance'.",
+      "Octopuses have three hearts and blue blood.",
+      "The shortest war in history lasted only 38-45 minutes between Britain and Zanzibar in 1896.",
+      "A single cloud can weigh more than a million pounds.",
+      "Bananas are berries, but strawberries aren't.",
+      "The human brain uses about 20% of the body's total energy.",
+      "There are more possible games of chess than atoms in the observable universe.",
+      "A day on Venus is longer than its year.",
+      "The Great Wall of China isn't visible from space with the naked eye.",
+      "Sharks have been around longer than trees.",
+      "A shrimp's heart is in its head.",
+      "The unicorn is Scotland's national animal.",
+      "A group of pandas is called an 'embarrassment'.",
+      "Cleopatra lived closer in time to the Moon landing than to the construction of the Great Pyramid."
+    ];
+    
+    // --- INTERESTING FACTS ---
+    const suggestionContainer = document.getElementById("suggestions");
+    function loadInterestingFacts() {
+      suggestionContainer.innerHTML = '';
+    
+      // Shuffle and pick 5 random facts
+      const shuffled = [...interestingFacts].sort(() => 0.5 - Math.random());
+      const selectedFacts = shuffled.slice(0, 5);
+    
+      selectedFacts.forEach((fact, i) => {
+        suggestionContainer.innerHTML += `<div class="suggestion fact-item">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--purple));display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;font-size:14px;">💡</div>
+            <p style="font-size:13px;line-height:1.4;margin:0;flex:1;">${fact}</p>
+          </div>
+        </div>`;
+      });
+    }
+    
+    // Load facts on page load
+    loadInterestingFacts();
+    
+    // UI state
+    let standpoints = [];
+    const feedEl = qs('#feed');
+    const tpl = qs('#postTpl');
+
+    // Current user from localStorage
+    let currentUser = localStorage.getItem('currentUser') || 'Divyansh Srivastav';
+    let currentUsername = localStorage.getItem('currentUsername') || 'divyansh_srivastav';
+    
+    // Comment modal variables
+    let currentStandpointCommentId = null;
+
+    // Composer elements
+    const displayNameInput = qs('#displayName');
+    const postText = qs('#postText');
+    const charCount = qs('#charCount');
+    const imageInput = qs('#imageInput');
+    const imagePreviewWrap = qs('#imagePreviewWrap');
+    const composerAvatar = qs('#composer-avatar');
+
+    // Set current user as default display name
+    displayNameInput.value = currentUser;
+
+    // Live clock
+    function tickLocalTime(){qs('#local-time').textContent = new Date().toLocaleString();}
+    setInterval(tickLocalTime,1000); tickLocalTime();
+
+    // Update avatar letter
+    function updateAvatar(){composerAvatar.textContent = (displayNameInput.value||'You')[0]?.toUpperCase()||'Y';}
+    displayNameInput.addEventListener('input', updateAvatar);
+    updateAvatar();
+
+    // Char count
+    postText.addEventListener('input', ()=>{charCount.textContent = postText.value.length + '/280';});
+
+    // Image support
+    let currentImageDataUrl = null;
+    imageInput.addEventListener('change', e=>{
+      const f = e.target.files && e.target.files[0];
+      if(!f) return removeImagePreview();
+      const reader = new FileReader();
+      reader.onload = ()=>{
+        currentImageDataUrl = reader.result;
+        renderImagePreview(currentImageDataUrl);
+      }
+      reader.readAsDataURL(f);
+    });
+
+    function renderImagePreview(src){
+      imagePreviewWrap.innerHTML = `
+        <div class="image-preview">
+          <img src="${src}" alt="preview" />
+          <button class="remove-image" type="button">✕</button>
+        </div>
+      `;
+      qs('.remove-image', imagePreviewWrap).addEventListener('click', ()=>{removeImagePreview();});
+    }
+    function removeImagePreview(){currentImageDataUrl = null; imageInput.value=''; imagePreviewWrap.innerHTML='';}
+
+    // Compose actions
+    qs('#clearBtn').addEventListener('click', ()=>{postText.value=''; charCount.textContent='0/280'; removeImagePreview();});
+
+    qs('#postBtn').addEventListener('click', ()=>{
+      const text = postText.value.trim();
+      if(!text && !currentImageDataUrl) return; // nothing to post
+      const formData = new FormData();
+      formData.append('text', text);
+      formData.append('username', currentUsername);
+      if(currentImageDataUrl) {
+        // Convert dataUrl to blob
+        fetch(currentImageDataUrl).then(res => res.blob()).then(blob => {
+          formData.append('image', blob, 'image.png');
+          postStandpoint(formData);
+        });
+      } else {
+        postStandpoint(formData);
+      }
+    });
+    
+    function postStandpoint(formData) {
+      fetch('/api/standpoints', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(newStandpoint => {
+        standpoints.unshift(newStandpoint);
+        renderFeed();
+        // clear
+        postText.value=''; charCount.textContent='0/280'; removeImagePreview();
+      })
+      .catch(err => console.error('Error posting standpoint:', err));
+    }
+
+    // Render helpers
+    function createPostElement(p){
+      const el = tpl.content.firstElementChild.cloneNode(true);
+      el.dataset.id = p._id;
+      const avatar = el.querySelector('.avatar');
+      avatar.textContent = p.user?.username?.[0]?.toUpperCase() || 'U';
+      el.querySelector('.name').textContent = p.user?.username || 'Unknown';
+      el.querySelector('.handle').textContent = '@' + (p.user?.username || 'unknown');
+      el.querySelector('.ts').textContent = '· ' + timeAgo(p.createdAt) + ' · ' + new Date(p.createdAt).toLocaleString();
+      el.querySelector('.post-body').textContent = p.text || '';
+      const imgEl = el.querySelector('.post-image');
+      if(p.image){ imgEl.src = p.image; imgEl.style.display='block'; } else imgEl.style.display='none';
+      // actions
+      const likeBtn = el.querySelector('.like');
+      const commentBtn = el.querySelector('.comment');
+      const shareBtn = el.querySelector('.share');
+      likeBtn.querySelector('.count').textContent = p.likes || 0;
+      commentBtn.querySelector('.count').textContent = Array.isArray(p.comments) ? p.comments.length : 0;
+      shareBtn.querySelector('.count').textContent = p.shares || 0;
+    
+      const isLiked = p.likedBy && p.likedBy.includes(currentUsername);
+      if (isLiked) {
+        likeBtn.style.color = 'crimson';
+        el.dataset.liked = '1';
+      }
+    
+      likeBtn.addEventListener('click', ()=>{
+        fetch(`/api/standpoints/${p._id}/like`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: currentUsername })
+        })
+        .then(res => res.json())
+        .then(data => {
+          p.likes = data.likes;
+          p.likedBy = data.likedBy;
+          likeBtn.querySelector('.count').textContent = p.likes;
+          const nowLiked = p.likedBy.includes(currentUsername);
+          likeBtn.style.color = nowLiked ? 'crimson' : '';
+          el.dataset.liked = nowLiked ? '1' : '0';
+        })
+        .catch(err => console.error('Error liking standpoint:', err));
+      });
+    
+      commentBtn.addEventListener('click', ()=>{
+        alert('Comment button clicked for standpoint: ' + p._id);
+        currentStandpointCommentId = p._id;
+        loadStandpointComments(p);
+        document.getElementById('standpointCommentModal').style.display = 'flex';
+        // small visual cue
+        commentBtn.animate([{transform:'scale(1)'},{transform:'scale(1.08)'},{transform:'scale(1)'}],{duration:220});
+      });
+      shareBtn.addEventListener('click', ()=>{
+        fetch(`/api/standpoints/${p._id}/share`, { method: 'PUT' })
+        .then(res => res.json())
+        .then(data => {
+          p.shares = data.shares;
+          shareBtn.querySelector('.count').textContent = p.shares;
+        })
+        .catch(err => console.error('Error sharing standpoint:', err));
+      });
+    
+      // optional glow: set if text includes idea, love, great, or emoji
+      const glowWords = ['idea','love','great','✨','🪽','❤️']
+      el.dataset.glow = glowWords.some(w=> (p.text||'').toLowerCase().includes(w.replace('✨','')) );
+    
+      return el;
+    }
+    
+    function renderFeed(){
+      feedEl.innerHTML='';
+      standpoints.forEach(p=>{
+        const node = createPostElement(p);
+        feedEl.appendChild(node);
+      });
+    }
+    
+    function loadStandpoints(){
+      fetch('/api/standpoints')
+      .then(res => res.json())
+      .then(data => {
+        standpoints = data;
+        renderFeed();
+      })
+      .catch(err => console.error('Error loading standpoints:', err));
+    }
+    
+    // initial load
+    loadStandpoints();
+
+    // update timeago every 30s
+    setInterval(()=>{
+      qsa('.post .ts').forEach(tsEl=>{
+        const parent = tsEl.closest('.post');
+        const id = parent.dataset.id;
+        const p = standpoints.find(x=>x._id===id);
+        if(p) tsEl.textContent = '· ' + timeAgo(p.createdAt) + ' · ' + new Date(p.createdAt).toLocaleString();
+      })
+    },30000);
+
+    // --- DARK MODE ---
+    let dark = false;
+    function toggleDarkMode() {
+      dark = !dark;
+      document.body.classList.toggle('dark', dark);
+      document.querySelector('.side-navbar').classList.toggle('dark', dark);
+      document.querySelector('.right-navbar').classList.toggle('dark', dark);
+      const toggle = document.getElementById("themeToggle");
+      if (toggle) {
+        toggle.src = dark
+          ? "https://img.icons8.com/ios/50/sun--v1.png"
+          : "https://img.icons8.com/ios/50/moon-symbol.png";
+      }
+      const moonIcon = document.querySelector('.right-navbar .nav-item:nth-child(2) i');
+      if (moonIcon) {
+        moonIcon.className = dark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+      }
+    }
+    const toggle = document.getElementById("themeToggle");
+    if (toggle) {
+      toggle.onclick = toggleDarkMode;
+    }
+
+    // --- PROFILE FUNCTIONS ---
+    function goProfile(){window.location.href='profile.html';}
+    function logout(){
+      localStorage.clear();
+      window.location.href='login.html';
+    }
+    function switchAccount(){
+      // Show suggestions or go to profile
+      const sidebar = document.querySelector('.sidebar');
+      if (sidebar) {
+        sidebar.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function loadNotifications() {
+      fetch(`/api/notifications/${currentUsername}/unread`)
+        .then(res => res.json())
+        .then(data => {
+          const badge = document.getElementById('notificationBadge');
+          if (data.count > 0) {
+            badge.textContent = data.count > 99 ? '99+' : data.count;
+            badge.style.display = 'inline';
+          } else {
+            badge.style.display = 'none';
+          }
+        })
+        .catch(err => console.error('Error loading notifications:', err));
+    }
+    
+    function showNotifications() {
+      // Mark as read and navigate to notifications
+      fetch(`/api/notifications/${currentUsername}/read`, { method: 'PUT' })
+        .then(() => {
+          loadNotifications(); // Update badge
+          window.location.href = 'noti.html';
+        })
+        .catch(err => console.error('Error marking notifications as read:', err));
+    }
+
+    // Standpoint comment functions
+    function loadStandpointComments(post) {
+      console.log('Loading comments for standpoint:', post._id);
+      fetch(`/api/standpoints/${post._id}/comments`)
+      .then(res => res.json())
+      .then(comments => {
+        console.log('Loaded comments:', comments);
+        const list = document.getElementById('standpointCommentsList');
+        list.innerHTML = '';
+        comments.forEach(comment => {
+          list.innerHTML += `<div class="post-comment">
+            <strong>${comment.user}</strong>: ${comment.text}
+            <small>${new Date(comment.ts).toLocaleString()}</small>
+          </div>`;
+        });
+      })
+      .catch(err => console.error('Error loading comments:', err));
+    }
+
+    function submitStandpointComment() {
+      const input = document.getElementById('newStandpointComment');
+      const text = input.value.trim();
+      if (!text) return;
+      alert('Submitting comment: ' + text);
+      fetch(`/api/standpoints/${currentStandpointCommentId}/comment`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user: currentUsername, text })
+      })
+      .then(res => res.json())
+      .then(comments => {
+        alert('Comment posted successfully');
+        // Update the post's comments
+        const post = standpoints.find(p => p._id === currentStandpointCommentId);
+        if (post) post.comments = comments;
+        renderFeed(); // update counts
+        input.value = '';
+        loadStandpointComments(post);
+      })
+      .catch(err => alert('Error posting comment: ' + err.message));
+    }
+
+    // Screenshot detection
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        fetch('/api/notifications/screenshot', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ from: currentUsername })
+        }).catch(err => console.error('Error recording screenshot:', err));
+      }
+    });
+    
+    // Screenshot popup check
+    let lastScreenshotTime = 0;
+    function checkScreenshots() {
+      fetch('/api/notifications/screenshot/latest')
+        .then(res => res.json())
+        .then(data => {
+          if (data && new Date(data.timestamp).getTime() > lastScreenshotTime) {
+            alert(`${data.from} took a screenshot!`);
+            lastScreenshotTime = new Date(data.timestamp).getTime();
+          }
+        })
+        .catch(err => console.error('Error checking screenshots:', err));
+    }
+    setInterval(checkScreenshots, 1000);
+    
+    
+    // Initialize notifications
+    loadNotifications();
+
+    // Event listeners for standpoint comment modal
+    document.getElementById('submitStandpointComment').addEventListener('click', submitStandpointComment);
+    document.getElementById('newStandpointComment').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') submitStandpointComment();
+    });
+    document.getElementById('closeStandpointCommentModal').addEventListener('click', () => {
+      document.getElementById('standpointCommentModal').style.display = 'none';
+    });
+
+  </script>
+</body>
+
+<!-- Comment Modal for Standpoint -->
+<div class="post-comment-modal" id="standpointCommentModal" style="display:none;">
+  <div class="post-comment-content">
+    <span class="post-close-btn" id="closeStandpointCommentModal">&times;</span>
+    <h3>Comments</h3>
+    <div id="standpointCommentsList"></div>
+
+    <div class="post-comment-input">
+      <input type="text" id="newStandpointComment" placeholder="Add a comment..." maxlength="200">
+      <button id="submitStandpointComment">Post</button>
+    </div>
+  </div>
+</div>
+
+<div id="wings-chatbot">
+<style>
+#chatbot-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #6ed6c3, #b48efa, #ffb28b);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 24px;
+  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease;
+}
+#chatbot-toggle:hover {
+  transform: scale(1.1);
+}
+#chat-window {
+  display: none;
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 350px;
+  height: 500px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  z-index: 1000;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+}
+#chat-window.dark {
+  background-color: #2c2c2c;
+  color: white;
+  border-color: #555;
+}
+#chat-header {
+  background: linear-gradient(135deg, #6ed6c3, #b48efa);
+  color: white;
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+#close-chat {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+#chat-messages {
+  height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+  background: #f9f9f9;
+}
+#chat-window.dark #chat-messages {
+  background: #1e1e1e;
+}
+.message {
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  max-width: 80%;
+}
+.message.user {
+  background: #007bff;
+  color: white;
+  margin-left: auto;
+  text-align: right;
+}
+.message.bot {
+  background: #e9ecef;
+  color: #333;
+}
+#chat-window.dark .message.bot {
+  background: #444;
+  color: white;
+}
+#quick-actions {
+  padding: 10px;
+  border-top: 1px solid #ccc;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+#chat-window.dark #quick-actions {
+  border-color: #555;
+}
+.quick-btn {
+  background: #6ed6c3;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 0.3s;
+}
+.quick-btn:hover {
+  background: #56b9a8;
+}
+#chat-input-area {
+  display: flex;
+  border-top: 1px solid #ccc;
+}
+#chat-window.dark #chat-input-area {
+  border-color: #555;
+}
+#chat-input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  outline: none;
+  background: white;
+}
+#chat-window.dark #chat-input {
+  background: #2c2c2c;
+  color: white;
+}
+#send-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+#send-btn:hover {
+  background: #0056b3;
+}
+.typing {
+  font-style: italic;
+  color: #666;
+}
+#chat-window.dark .typing {
+  color: #ccc;
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const toggle = document.getElementById('chatbot-toggle');
+  const windowEl = document.getElementById('chat-window');
+  const closeBtn = document.getElementById('close-chat');
+  const messagesEl = document.getElementById('chat-messages');
+  const inputEl = document.getElementById('chat-input');
+  const sendBtn = document.getElementById('send-btn');
+  const quickActions = document.getElementById('quick-actions');
+
+  let chatHistory = JSON.parse(localStorage.getItem('wingsChatHistory')) || [];
+  let isDark = document.body.classList.contains('dark');
+
+  // Load history
+  function loadHistory() {
+    messagesEl.innerHTML = '';
+    chatHistory.forEach(msg => {
+      addMessage(msg.text, msg.sender);
+    });
+  }
+
+  // Save history
+  function saveHistory() {
+    localStorage.setItem('wingsChatHistory', JSON.stringify(chatHistory));
+  }
+
+  // Add message
+  function addMessage(text, sender) {
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `message ${sender}`;
+    msgDiv.textContent = text;
+    messagesEl.appendChild(msgDiv);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  // Bot responses
+  const responses = {
+    'hello': 'Hi there! How can I help you with Wings?',
+    'hi': 'Hello! Welcome to Wings. What would you like to know?',
+    'how to post': 'To post, click the + icon in the sidebar, select a photo/video, add a caption, and post!',
+    'explore': 'navigate:explore.html',
+    'profile': 'navigate:profile.html',
+    'message': 'navigate:message.html',
+    'reel': 'navigate:reels.html',
+    'story': 'navigate:home.html', // assuming stories are on home
+    'dark mode': 'Toggle dark mode using the moon icon in the top right navbar.',
+    'help': 'I can help with: posting, exploring, messaging, reels, stories, profile, dark mode, and more!',
+    'default': 'Sorry, I didn\'t understand that. Try asking about posting, exploring, or other features!'
+  };
+
+  function getResponse(message) {
+    const lowerMsg = message.toLowerCase();
+    for (let key in responses) {
+      if (lowerMsg.includes(key)) {
+        return responses[key];
+      }
+    }
+    return responses['default'];
+  }
+
+  // Send message
+  function sendMessage() {
+    const text = inputEl.value.trim();
+    if (!text) return;
+    addMessage(text, 'user');
+    chatHistory.push({ text, sender: 'user' });
+    inputEl.value = '';
+
+    // Typing indicator
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'message bot typing';
+    typingDiv.textContent = 'Typing...';
+    messagesEl.appendChild(typingDiv);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+
+    setTimeout(() => {
+      const response = getResponse(text);
+      if (response.startsWith('navigate:')) {
+        typingDiv.remove();
+        const page = response.split(':')[1];
+        window.location.href = page;
+      } else {
+        typingDiv.remove();
+        addMessage(response, 'bot');
+        chatHistory.push({ text: response, sender: 'bot' });
+        saveHistory();
+      }
+    }, 1000);
+  }
+
+  // Quick actions
+  quickActions.addEventListener('click', (e) => {
+    if (e.target.classList.contains('quick-btn')) {
+      const question = e.target.textContent;
+      if (question === 'Watch reels') {
+        window.location.href = 'reels.html';
+      } else if (question === 'Explore features') {
+        window.location.href = 'explore.html';
+      } else if (question === 'My profile') {
+        window.location.href = 'profile.html';
+      } else if (question === 'Send message') {
+        window.location.href = 'message.html';
+      } else if (question === 'Add story') {
+        window.location.href = 'home.html';
+      } else {
+        inputEl.value = question;
+        sendMessage();
+      }
+    }
+  });
+
+  // Event listeners
+  toggle.addEventListener('click', () => {
+    windowEl.style.display = windowEl.style.display === 'none' ? 'block' : 'none';
+    if (windowEl.style.display === 'block') {
+      loadHistory();
+      inputEl.focus();
+    }
+  });
+
+  closeBtn.addEventListener('click', () => {
+    windowEl.style.display = 'none';
+  });
+
+  sendBtn.addEventListener('click', sendMessage);
+  inputEl.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') sendMessage();
+  });
+
+  // Dark mode sync
+  function updateDarkMode() {
+    isDark = document.body.classList.contains('dark');
+    windowEl.classList.toggle('dark', isDark);
+  }
+  updateDarkMode();
+  // Listen for dark mode changes (assuming toggleDarkMode is global)
+  if (typeof toggleDarkMode === 'function') {
+    const originalToggle = toggleDarkMode;
+    toggleDarkMode = function() {
+      originalToggle();
+      updateDarkMode();
+    };
+  }
+
+  // Initial greeting if no history
+  if (chatHistory.length === 0) {
+    addMessage('Hi! I\'m Wings Chatbot. How can I assist you today?', 'bot');
+    chatHistory.push({ text: 'Hi! I\'m Wings Chatbot. How can I assist you today?', sender: 'bot' });
+    saveHistory();
+  }
+});
+</script>
+<button id="chatbot-toggle">💬</button>
+<div id="chat-window">
+  <div id="chat-header">
+    Wings Chatbot
+    <button id="close-chat">×</button>
+  </div>
+  <div id="chat-messages"></div>
+  <div id="quick-actions">
+    <button class="quick-btn">How to post?</button>
+    <button class="quick-btn">Explore features</button>
+    <button class="quick-btn">My profile</button>
+    <button class="quick-btn">Send message</button>
+    <button class="quick-btn">Watch reels</button>
+    <button class="quick-btn">Add story</button>
+  </div>
+  <div id="chat-input-area">
+    <input type="text" id="chat-input" placeholder="Type your message...">
+    <button id="send-btn">Send</button>
+  </div>
+</div>
+</div>
+</html>

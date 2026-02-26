@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WINGS 🪽 Login</title>
+<style>
+:root {
+  --teal: #6ed6c3;
+  --lavender: #b48efa;
+  --peach: #ffb28b;
+  --charcoal: #3a3a3a;
+  --bg: #ffffff;
+  --transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: "Poppins", sans-serif;
+  background: var(--bg);
+  color: var(--charcoal);
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+.container {
+  display: flex;
+  width: 100%;
+}
+
+/* ---------- LEFT PANEL ---------- */
+.left {
+  flex: 1;
+  background: linear-gradient(135deg, var(--teal), var(--lavender));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.svg-scene {
+  width: 90%; /* enlarged */
+  max-width: 420px;
+}
+.eye {
+  transition: transform var(--transition);
+  transform-origin: center;
+}
+
+/* ---------- RIGHT PANEL ---------- */
+.right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+form {
+  width: 80%;
+  max-width: 350px;
+}
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: var(--charcoal);
+}
+input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border: 2px solid #eee;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: border var(--transition);
+}
+input:focus {
+  outline: none;
+  border-color: var(--lavender);
+}
+.password-wrapper {
+  position: relative;
+}
+.toggle-password {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+button {
+  width: 100%;
+  background: var(--lavender);
+  color: white;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition);
+}
+button:hover {
+  background: var(--teal);
+  transform: translateY(-2px);
+}
+
+/* ---------- ANIMATIONS ---------- */
+.peek .char {
+  transform: translateX(10px) rotate(-5deg);
+}
+.peek .eye {
+  transform: scale(1.2);
+}
+.sad .eye circle {
+  r: 3;
+}
+.sad .eye path {
+  stroke: var(--charcoal);
+  stroke-width: 2;
+  fill: none;
+  d: "M5 10 Q10 5 15 10";
+}
+.happy .eye circle {
+  r: 7;
+}
+.happy .eye path {
+  stroke: var(--charcoal);
+  stroke-width: 2;
+  fill: none;
+  d: "M5 5 Q10 10 15 5";
+}
+.flyaway .char {
+  animation: flyaway 0.8s ease-out forwards;
+}
+@keyframes flyaway {
+  to {
+    opacity: 0;
+    transform: translate(var(--tx, 0), var(--ty, 0)) rotate(45deg) scale(1.3);
+  }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="left">
+    <svg class="svg-scene" viewBox="0 0 200 200">
+      <!-- Orange semi-circle -->
+      <g class="char char1" transform="translate(30,100)">
+        <path d="M0,0 a40,40 0 1,0 80,0" fill="#FFB28B"/>
+        <g class="eye" transform="translate(25,-5)">
+          <circle cx="0" cy="0" r="5" fill="#3A3A3A"/>
+          <path d="" stroke="#3A3A3A" stroke-width="2" fill="none"/>
+        </g>
+        <g class="eye" transform="translate(55,-5)">
+          <circle cx="0" cy="0" r="5" fill="#3A3A3A"/>
+          <path d="" stroke="#3A3A3A" stroke-width="2" fill="none"/>
+        </g>
+      </g>
+      <!-- Purple rectangle -->
+      <g class="char char2" transform="translate(90,60)">
+        <rect width="35" height="80" rx="12" fill="#B48EFA"/>
+        <g class="eye" transform="translate(10,20)">
+          <circle cx="0" cy="0" r="5" fill="#3A3A3A"/>
+          <path d="" stroke="#3A3A3A" stroke-width="2" fill="none"/>
+        </g>
+        <g class="eye" transform="translate(25,20)">
+          <circle cx="0" cy="0" r="5" fill="#3A3A3A"/>
+          <path d="" stroke="#3A3A3A" stroke-width="2" fill="none"/>
+        </g>
+      </g>
+      <!-- Black rectangle -->
+      <g class="char char3" transform="translate(140,70)">
+        <rect width="35" height="70" rx="12" fill="#3A3A3A"/>
+        <g class="eye" transform="translate(10,18)">
+          <circle cx="0" cy="0" r="5" fill="white"/>
+          <path d="" stroke="white" stroke-width="2" fill="none"/>
+        </g>
+        <g class="eye" transform="translate(25,18)">
+          <circle cx="0" cy="0" r="5" fill="white"/>
+          <path d="" stroke="white" stroke-width="2" fill="none"/>
+        </g>
+      </g>
+      <!-- Yellow teardrop -->
+      <g class="char char4" transform="translate(160,100)">
+        <path d="M20 0 C5 20 0 40 20 60 C40 40 35 20 20 0Z" fill="#FEE440"/>
+        <g class="eye" transform="translate(12,20)">
+          <circle cx="0" cy="0" r="5" fill="#3A3A3A"/>
+          <path d="" stroke="#3A3A3A" stroke-width="2" fill="none"/>
+        </g>
+        <g class="eye" transform="translate(28,20)">
+          <circle cx="0" cy="0" r="5" fill="#3A3A3A"/>
+          <path d="" stroke="#3A3A3A" stroke-width="2" fill="none"/>
+        </g>
+      </g>
+    </svg>
+  </div>
+
+  <div class="right">
+    <div style="display: flex; margin-bottom: 1rem;">
+      <button id="loginTab" style="flex: 1; padding: 0.5rem; background: var(--lavender); color: white; border: none; border-radius: 5px 0 0 5px; cursor: pointer;">Login</button>
+      <button id="registerTab" style="flex: 1; padding: 0.5rem; background: #f0f0f0; color: black; border: none; border-radius: 0 5px 5px 0; cursor: pointer;">Register</button>
+    </div>
+    <form id="authForm">
+      <h1 id="formTitle">Welcome back to <span style="color:var(--lavender);">WINGS</span> 🪽</h1>
+      <div id="usernameField" style="display: none;">
+        <input type="text" id="username" placeholder="Username" required>
+      </div>
+      <input type="email" id="email" placeholder="Email" required>
+      <div class="password-wrapper">
+        <input type="password" id="password" placeholder="Password" required>
+        <span class="toggle-password" id="togglePassword">👁️</span>
+      </div>
+      <div id="fullNameField" style="display: none;">
+        <input type="text" id="fullName" placeholder="Full Name">
+      </div>
+      <button type="submit" id="submitBtn">Log in</button>
+    </form>
+  </div>
+</div>
+
+<script>
+let isLogin = true;
+const leftPanel = document.querySelector('.left');
+const passwordInput = document.getElementById('password');
+const togglePassword = document.getElementById('togglePassword');
+const form = document.getElementById('authForm');
+const eyes = document.querySelectorAll('.eye');
+const loginTab = document.getElementById('loginTab');
+const registerTab = document.getElementById('registerTab');
+const usernameField = document.getElementById('usernameField');
+const fullNameField = document.getElementById('fullNameField');
+const formTitle = document.getElementById('formTitle');
+const submitBtn = document.getElementById('submitBtn');
+
+function updateForm() {
+  if (isLogin) {
+    loginTab.style.background = 'var(--lavender)';
+    loginTab.style.color = 'white';
+    registerTab.style.background = '#f0f0f0';
+    registerTab.style.color = 'black';
+    usernameField.style.display = 'none';
+    fullNameField.style.display = 'none';
+    formTitle.innerHTML = 'Welcome back to <span style="color:var(--lavender);">WINGS</span> 🪽';
+    submitBtn.textContent = 'Log in';
+    document.getElementById('username').required = false;
+  } else {
+    registerTab.style.background = 'var(--lavender)';
+    registerTab.style.color = 'white';
+    loginTab.style.background = '#f0f0f0';
+    loginTab.style.color = 'black';
+    usernameField.style.display = 'block';
+    fullNameField.style.display = 'block';
+    formTitle.innerHTML = 'Join <span style="color:var(--lavender);">WINGS</span> 🪽';
+    submitBtn.textContent = 'Sign up';
+    document.getElementById('username').required = true;
+  }
+}
+
+loginTab.addEventListener('click', () => {
+  isLogin = true;
+  updateForm();
+});
+
+registerTab.addEventListener('click', () => {
+  isLogin = false;
+  updateForm();
+});
+
+/* --- Interactions --- */
+passwordInput.addEventListener('focus', () => {
+  leftPanel.classList.add('peek');
+  leftPanel.classList.remove('sad', 'flyaway');
+});
+passwordInput.addEventListener('blur', () => {
+  leftPanel.classList.remove('peek');
+});
+togglePassword.addEventListener('click', () => {
+  const isText = passwordInput.type === 'text';
+  passwordInput.type = isText ? 'password' : 'text';
+  togglePassword.textContent = isText ? '👁️' : '🙈';
+  leftPanel.classList.toggle('sad', !isText);
+});
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+
+  let data;
+  if (isLogin) {
+    data = { email, password };
+  } else {
+    const username = document.getElementById('username').value;
+    const fullName = document.getElementById('fullName').value;
+    data = { username, email, password, fullName };
+  }
+
+  try {
+    const response = await fetch(`http://localhost:5000/api/auth/${isLogin ? 'login' : 'register'}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+      localStorage.setItem('token', result.token);
+      localStorage.setItem('refreshToken', result.refreshToken);
+      leftPanel.classList.add('happy');
+      alert(`${isLogin ? 'Login' : 'Registration'} successful!`);
+      // Redirect to home page
+      window.location.href = 'home.html';
+    } else {
+      leftPanel.classList.add('sad');
+      alert(`Error: ${result.message}`);
+    }
+  } catch (error) {
+    alert('Network error: ' + error.message);
+  }
+
+  // Animation
+  leftPanel.classList.remove('peek', 'sad');
+  leftPanel.classList.add('flyaway');
+  const chars = document.querySelectorAll('.char');
+  chars.forEach((c) => {
+    c.style.setProperty('--tx', `${(Math.random() - 0.5) * 400}px`);
+    c.style.setProperty('--ty', `${(Math.random() - 0.5) * 300}px`);
+  });
+  setTimeout(() => {
+    form.reset();
+    leftPanel.classList.remove('flyaway', 'happy', 'sad');
+  }, 1000);
+});
+
+/* --- Eye Tracking --- */
+document.addEventListener('mousemove', (e) => {
+  const rect = leftPanel.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  eyes.forEach((eye) => {
+    const eyeBox = eye.getBoundingClientRect();
+    const centerX = eyeBox.left + eyeBox.width / 2 - rect.left;
+    const centerY = eyeBox.top + eyeBox.height / 2 - rect.top;
+    const dx = x - centerX;
+    const dy = y - centerY;
+    const angle = Math.atan2(dy, dx);
+    const distance = Math.min(Math.hypot(dx, dy) / 25, 2.5);
+    const offsetX = Math.cos(angle) * distance;
+    const offsetY = Math.sin(angle) * distance;
+    eye.setAttribute("transform", `translate(${parseFloat(eye.dataset.baseX || 0) + offsetX}, ${parseFloat(eye.dataset.baseY || 0) + offsetY})`);
+  });
+});
+
+/* store base positions for reset */
+eyes.forEach((eye) => {
+  const transform = eye.getAttribute("transform");
+  const match = /translate\(([-\d.]+),\s*([-\d.]+)\)/.exec(transform);
+  if (match) {
+    eye.dataset.baseX = parseFloat(match[1]);
+    eye.dataset.baseY = parseFloat(match[2]);
+  } else {
+    eye.dataset.baseX = 0;
+    eye.dataset.baseY = 0;
+  }
+});
+
+// Initialize
+updateForm();
+</script>
+</body>
+<div id="wings-chatbot">
+<style>
+#chatbot-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #6ed6c3, #b48efa, #ffb28b);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 24px;
+  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease;
+}
+#chatbot-toggle:hover {
+  transform: scale(1.1);
+}
+#chat-window {
+  display: none;
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 350px;
+  height: 500px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  z-index: 1000;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+}
+#chat-window.dark {
+  background-color: #2c2c2c;
+  color: white;
+  border-color: #555;
+}
+#chat-header {
+  background: linear-gradient(135deg, #6ed6c3, #b48efa);
+  color: white;
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+#close-chat {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+#chat-messages {
+  height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+  background: #f9f9f9;
+}
+#chat-window.dark #chat-messages {
+  background: #1e1e1e;
+}
+.message {
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  max-width: 80%;
+}
+.message.user {
+  background: #007bff;
+  color: white;
+  margin-left: auto;
+  text-align: right;
+}
+.message.bot {
+  background: #e9ecef;
+  color: #333;
+}
+#chat-window.dark .message.bot {
+  background: #444;
+  color: white;
+}
+#quick-actions {
+  padding: 10px;
+  border-top: 1px solid #ccc;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+#chat-window.dark #quick-actions {
+  border-color: #555;
+}
+.quick-btn {
+  background: #6ed6c3;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 0.3s;
+}
+.quick-btn:hover {
+  background: #56b9a8;
+}
+#chat-input-area {
+  display: flex;
+  border-top: 1px solid #ccc;
+}
+#chat-window.dark #chat-input-area {
+  border-color: #555;
+}
+#chat-input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  outline: none;
+  background: white;
+}
+#chat-window.dark #chat-input {
+  background: #2c2c2c;
+  color: white;
+}
+#send-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+#send-btn:hover {
+  background: #0056b3;
+}
+.typing {
+  font-style: italic;
+  color: #666;
+}
+#chat-window.dark .typing {
+  color: #ccc;
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const toggle = document.getElementById('chatbot-toggle');
+  const windowEl = document.getElementById('chat-window');
+  const closeBtn = document.getElementById('close-chat');
+  const messagesEl = document.getElementById('chat-messages');
+  const inputEl = document.getElementById('chat-input');
+  const sendBtn = document.getElementById('send-btn');
+  const quickActions = document.getElementById('quick-actions');
+
+  let chatHistory = JSON.parse(localStorage.getItem('wingsChatHistory')) || [];
+  let isDark = document.body.classList.contains('dark');
+
+  // Load history
+  function loadHistory() {
+    messagesEl.innerHTML = '';
+    chatHistory.forEach(msg => {
+      addMessage(msg.text, msg.sender);
+    });
+  }
+
+  // Save history
+  function saveHistory() {
+    localStorage.setItem('wingsChatHistory', JSON.stringify(chatHistory));
+  }
+
+  // Add message
+  function addMessage(text, sender) {
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `message ${sender}`;
+    msgDiv.textContent = text;
+    messagesEl.appendChild(msgDiv);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  // Bot responses
+  const responses = {
+    'hello': 'Hi there! How can I help you with Wings?',
+    'hi': 'Hello! Welcome to Wings. What would you like to know?',
+    'how to post': 'To post, click the + icon in the sidebar, select a photo/video, add a caption, and post!',
+    'explore': 'navigate:explore.html',
+    'profile': 'navigate:profile.html',
+    'message': 'navigate:message.html',
+    'reel': 'navigate:reels.html',
+    'story': 'navigate:home.html', // assuming stories are on home
+    'dark mode': 'Toggle dark mode using the moon icon in the top right navbar.',
+    'help': 'I can help with: posting, exploring, messaging, reels, stories, profile, dark mode, and more!',
+    'default': 'Sorry, I didn\'t understand that. Try asking about posting, exploring, or other features!'
+  };
+
+  function getResponse(message) {
+    const lowerMsg = message.toLowerCase();
+    for (let key in responses) {
+      if (lowerMsg.includes(key)) {
+        return responses[key];
+      }
+    }
+    return responses['default'];
+  }
+
+  // Send message
+  function sendMessage() {
+    const text = inputEl.value.trim();
+    if (!text) return;
+    addMessage(text, 'user');
+    chatHistory.push({ text, sender: 'user' });
+    inputEl.value = '';
+
+    // Typing indicator
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'message bot typing';
+    typingDiv.textContent = 'Typing...';
+    messagesEl.appendChild(typingDiv);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+
+    setTimeout(() => {
+      const response = getResponse(text);
+      if (response.startsWith('navigate:')) {
+        typingDiv.remove();
+        const page = response.split(':')[1];
+        window.location.href = page;
+      } else {
+        typingDiv.remove();
+        addMessage(response, 'bot');
+        chatHistory.push({ text: response, sender: 'bot' });
+        saveHistory();
+      }
+    }, 1000);
+  }
+
+  // Quick actions
+  quickActions.addEventListener('click', (e) => {
+    if (e.target.classList.contains('quick-btn')) {
+      const question = e.target.textContent;
+      if (question === 'Watch reels') {
+        window.location.href = 'reels.html';
+      } else if (question === 'Explore features') {
+        window.location.href = 'explore.html';
+      } else if (question === 'My profile') {
+        window.location.href = 'profile.html';
+      } else if (question === 'Send message') {
+        window.location.href = 'message.html';
+      } else if (question === 'Add story') {
+        window.location.href = 'home.html';
+      } else {
+        inputEl.value = question;
+        sendMessage();
+      }
+    }
+  });
+
+  // Event listeners
+  toggle.addEventListener('click', () => {
+    windowEl.style.display = windowEl.style.display === 'none' ? 'block' : 'none';
+    if (windowEl.style.display === 'block') {
+      loadHistory();
+      inputEl.focus();
+    }
+  });
+
+  closeBtn.addEventListener('click', () => {
+    windowEl.style.display = 'none';
+  });
+
+  sendBtn.addEventListener('click', sendMessage);
+  inputEl.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') sendMessage();
+  });
+
+  // Dark mode sync
+  function updateDarkMode() {
+    isDark = document.body.classList.contains('dark');
+    windowEl.classList.toggle('dark', isDark);
+  }
+  updateDarkMode();
+  // Listen for dark mode changes (assuming toggleDarkMode is global)
+  if (typeof toggleDarkMode === 'function') {
+    const originalToggle = toggleDarkMode;
+    toggleDarkMode = function() {
+      originalToggle();
+      updateDarkMode();
+    };
+  }
+
+  // Initial greeting if no history
+  if (chatHistory.length === 0) {
+    addMessage('Hi! I\'m Wings Chatbot. How can I assist you today?', 'bot');
+    chatHistory.push({ text: 'Hi! I\'m Wings Chatbot. How can I assist you today?', sender: 'bot' });
+    saveHistory();
+  }
+});
+</script>
+<button id="chatbot-toggle">💬</button>
+<div id="chat-window">
+  <div id="chat-header">
+    Wings Chatbot
+    <button id="close-chat">×</button>
+  </div>
+  <div id="chat-messages"></div>
+  <div id="quick-actions">
+    <button class="quick-btn">How to post?</button>
+    <button class="quick-btn">Explore features</button>
+    <button class="quick-btn">My profile</button>
+    <button class="quick-btn">Send message</button>
+    <button class="quick-btn">Watch reels</button>
+    <button class="quick-btn">Add story</button>
+  </div>
+  <div id="chat-input-area">
+    <input type="text" id="chat-input" placeholder="Type your message...">
+    <button id="send-btn">Send</button>
+  </div>
+</div>
+</div>
+</html>

@@ -1,0 +1,91 @@
+<!-- Post Comment Section Component -->
+<!-- Separate from other comment sections -->
+
+<style>
+.post-comment-modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(6px);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.post-comment-content {
+  background: #1b1f25;
+  border-radius: 16px;
+  width: 400px;
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: 1rem;
+  box-shadow: 0 0 20px rgba(255,255,255,0.1);
+}
+.post-comment {
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding: .5rem 0;
+}
+.post-comment small {
+  color: #aaa;
+  display: block;
+}
+.post-comment-input {
+  display: flex;
+  gap: .5rem;
+  margin-top: 1rem;
+}
+.post-comment-input input {
+  flex: 1;
+  padding: .5rem;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+}
+.post-comment-input button {
+  background: #6ed6c3;
+  border: none;
+  padding: .5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background .2s;
+  color: #fff;
+}
+.post-comment-input button:hover {
+  background: #56b9a8;
+}
+.post-comment-input button:disabled {
+  background: #555;
+  cursor: not-allowed;
+}
+.post-close-btn {
+  float: right;
+  cursor: pointer;
+  color: #ffb28b;
+  font-size: 1.5rem;
+}
+.post-comment-icon {
+  cursor: pointer;
+  color: #6ed6c3;
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  transition: transform 0.2s;
+}
+.post-comment-icon:hover { transform: scale(1.1); }
+</style>
+
+<div class="post-comment-modal" id="postCommentModal">
+  <div class="post-comment-content">
+    <span class="post-close-btn" id="closePostCommentModal">&times;</span>
+    <h3>Post Comments</h3>
+    <div id="postCommentsList"></div>
+
+    <div class="post-comment-input">
+      <input type="text" id="newPostComment" placeholder="Add a comment..." maxlength="200">
+      <button id="submitPostComment">Post</button>
+    </div>
+  </div>
+</div>
